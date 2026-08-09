@@ -8,6 +8,7 @@ reference:
       - robust_rv
       - calibrated_rv
       - rv_cal_bounded
+      - rv_cal_bounded_sequence
       - conditional_omega_rv
   - title: Model preparation and evaluation
     contents:
@@ -15,20 +16,35 @@ reference:
       - cache_from_lm
       - evaluate_confounder
       - evaluate_confounder_reference
+      - evaluate_subspace
+      - validate_sandwich_reference
   - title: Calibration and Cinelli-Hazlett geometry
     contents:
       - benchmark_calibration
       - benchmark_from_model
       - bounded_benchmark_band
+      - alignment_directions
+      - single_parameterization
+      - classical_ch_t
+      - conditional_omega_evaluator
       - conditional_equal_strength_rv
       - conditional_protected_rv
+  - title: Conventional benchmarks
+    contents:
+      - point_estimate_rv
       - conventional_rv
+      - naive_robust_t_rv
       - compare_sensemakr
+  - title: Multiple-confounder geometry
+    contents:
+      - reduce_score_subspace
+      - verify_score_reduction
   - title: Result methods
     contents:
       - print.robust_rv_result
       - summary.robust_rv_result
       - plot.robust_rv_result
+      - tidy_rv
 articles:
   - title: Get started
     contents:

@@ -1,0 +1,15 @@
+name: Methodology question
+description: Ask about estimands, covariance conventions, or certification
+title: "[Methodology]: "
+labels: [methodology]
+body:
+  - type: textarea
+    attributes:
+      label: Question
+      description: State the estimand and covariance estimator precisely.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Relevant reference or formula
+      description: Add a DOI, link, or equation if applicable.

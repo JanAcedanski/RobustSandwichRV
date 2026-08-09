@@ -1,0 +1,34 @@
+template:
+  bootstrap: 5
+  bootswatch: flatly
+reference:
+  - title: Main workflow
+    contents:
+      - robust_rv
+      - calibrated_rv
+      - rv_cal_bounded
+      - conditional_omega_rv
+  - title: Model preparation and evaluation
+    contents:
+      - prepare_model
+      - cache_from_lm
+      - evaluate_confounder
+      - evaluate_confounder_reference
+  - title: Calibration and Cinelli-Hazlett geometry
+    contents:
+      - benchmark_calibration
+      - benchmark_from_model
+      - bounded_benchmark_band
+      - conditional_equal_strength_rv
+      - conditional_protected_rv
+      - conventional_rv
+      - compare_sensemakr
+  - title: Result methods
+    contents:
+      - print.robust_rv_result
+      - summary.robust_rv_result
+      - plot.robust_rv_result
+articles:
+  - title: Get started
+    contents:
+      - robust-sandwich-rv

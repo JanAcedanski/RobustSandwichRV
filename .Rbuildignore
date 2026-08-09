@@ -1,0 +1,13 @@
+^\.github$
+^_pkgdown\.yml$
+^README\.Rmd$
+^data-raw$
+^cran-comments\.md$
+^RobustSandwichRV\.Rproj$
+^\.gitignore$
+^CONTRIBUTING\.md$
+^CODE_OF_CONDUCT\.md$
+^PUBLISHING\.md$
+^tools$
+^RobustSandwichRV_[0-9].*\.tar\.gz$
+^RobustSandwichRV\.Rcheck$

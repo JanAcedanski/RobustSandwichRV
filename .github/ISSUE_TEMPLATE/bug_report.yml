@@ -1,0 +1,23 @@
+name: Bug report
+description: Report an incorrect calculation or software failure
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: Reproducible example
+      description: Include data-generating code or a public data source.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected and observed result
+      description: Include vcov, clustering, calibration mode, and status.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Session information
+      description: Paste the output of sessionInfo().
+    validations:
+      required: true

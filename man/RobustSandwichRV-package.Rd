@@ -11,8 +11,16 @@ linear regression with classical, HC0, HC1, CR0, and CR1 standard errors.
 The recommended workflow is benchmark-bounded observed-control calibration;
 point-conditioned procedures remain available for diagnostics.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/JanAcedanski/RobustSandwichRV}
+  \item Report bugs at \url{https://github.com/JanAcedanski/RobustSandwichRV/issues}
+}
+
+}
 \author{
-\strong{Maintainer}: Jan Acedanski \email{robustsandwichrv@users.noreply.github.com}
+\strong{Maintainer}: Jan Acedanski \email{JanAcedanski@users.noreply.github.com}
 
 Other contributors:
 \itemize{

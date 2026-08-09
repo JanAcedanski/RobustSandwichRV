@@ -3,5 +3,6 @@ bibentry(
   title = "RobustSandwichRV: Certified Robustness Values with Sandwich Standard Errors",
   author = c(person("Jan", "Acedanski")),
   year = "2026",
-  note = "R package version 0.1.0"
+  note = "R package version 0.1.0",
+  url = "https://github.com/JanAcedanski/RobustSandwichRV"
 )

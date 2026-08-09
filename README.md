@@ -3,6 +3,10 @@
 
 # RobustSandwichRV
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/JanAcedanski/RobustSandwichRV/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JanAcedanski/RobustSandwichRV/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 `RobustSandwichRV` computes omitted-variable robustness values for
 linear regressions using classical, HC0, HC1, CR0, or CR1 standard
 errors. It combines Cinelli–Hazlett partial-$R^2$ geometry with the
@@ -29,7 +33,7 @@ install, test, or use it.
 
 ``` r
 install.packages("remotes")
-remotes::install_github("OWNER/RobustSandwichRV")
+remotes::install_github("JanAcedanski/RobustSandwichRV")
 ```
 
 ## HC1 example

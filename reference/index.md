@@ -2,6 +2,22 @@
 
 ## Main workflow
 
+- [`sandwich_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md)
+  [`print(`*`<sandwich_rv_analysis>`*`)`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md)
+  [`summary(`*`<sandwich_rv_analysis>`*`)`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md)
+  [`as.data.frame(`*`<sandwich_rv_analysis>`*`)`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md)
+  : Compare CH, unrestricted sandwich and both calibrated robustness
+  values
+- [`rv_sand()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.md)
+  : Unrestricted sandwich robustness value for loss of significance
+- [`rv_cal()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal.md)
+  : Increment and strength-dependent profile calibrated robustness
+  values
+- [`rv_benchmarks()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_benchmarks.md)
+  : Restoring-increment and profile benchmarks from observed controls
+
+## Legacy point and symmetric-band workflows
+
 - [`robust_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/robust_rv.md)
   [`observed_control_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/robust_rv.md)
   : Main model-facing robustness-value workflow
@@ -16,6 +32,11 @@
   : Point-conditioned attainable robustness value
 
 ## Model preparation and evaluation
+
+- [`fixed_hac_rule()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/fixed_score_rules.md)
+  [`fixed_twoway_cluster_rule()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/fixed_score_rules.md)
+  [`print(`*`<rv_score_rule>`*`)`](https://JanAcedanski.github.io/RobustSandwichRV/reference/fixed_score_rules.md)
+  : Fixed HAC and raw two-way cluster covariance rules
 
 - [`prepare_model()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/prepare_model.md)
   : Prepare a linear-regression sensitivity cache

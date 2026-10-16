@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RobustSandwichRV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,23 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="robustsandwichrv-050">RobustSandwichRV 0.5.0<a class="anchor" aria-label="anchor" href="#robustsandwichrv-050"></a></h2>
+<ul><li>Added version-pinned GitHub installation instructions and a runnable <code>demo("quick-start")</code> with a practitioner-oriented explanation of the table.</li>
+<li>Added fixed Bartlett and quadratic-spectral HAC, including article aliases <code>HAC_Bartlett_L4</code> and <code>HAC_QS_BW5</code>, frozen row ordering and explicit bandwidths.</li>
+<li>Added raw two-way CR0/CR1 via <code>TWCR0_raw</code>, <code>TWCR1_raw</code> and a rule constructor. CR1 preserves separate component corrections and the actual residual df.</li>
+<li>Extended all three current RV estimands, benchmark deletion refits, independent covariance evaluation and <code><a href="../reference/validate_sandwich_reference.html">validate_sandwich_reference()</a></code> to these rules.</li>
+<li>Added a continuous signed-form lower envelope for indefinite operators and signed-quadratic direction optimization/root finding. Nonpositive target variances are rejected, with no PSD repair.</li>
+<li>Full current-article validation now covers all 112 cases and all estimators.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="robustsandwichrv-020">RobustSandwichRV 0.2.0<a class="anchor" aria-label="anchor" href="#robustsandwichrv-020"></a></h2>
+<ul><li>Added <code><a href="../reference/rv_sand.html">rv_sand()</a></code> for unrestricted scalar-index loss robustness, with an analytical continuous-envelope lower bound and independently refitted uppers.</li>
+<li>Added <code><a href="../reference/rv_cal.html">rv_cal()</a></code> with restoring-increment and strength-dependent profile calibration from the current manuscript, allowing every positive ratio below the cap. Direct fixed caps are also supported.</li>
+<li>Added <code><a href="../reference/rv_benchmarks.html">rv_benchmarks()</a></code> retaining all signed deletion increments, common-chi corrections, partial R-squared values and binding controls. Empty, incomplete and complete-zero pools are distinguished. Blocks are not rank-normalized in the new increment calibration; the profile requires scalar benchmarks.</li>
+<li>Added <code><a href="../reference/sandwich_rv.html">sandwich_rv()</a></code> and a four-row practitioner table on a common test cutoff.</li>
+<li>Retained the legacy point and symmetric-band APIs for compatibility.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="robustsandwichrv-010">RobustSandwichRV 0.1.0<a class="anchor" aria-label="anchor" href="#robustsandwichrv-010"></a></h2>
 <ul><li>Initial pure-R implementation.</li>
 <li>Added classical, HC0, HC1, CR0, and CR1 scalar-confounder evaluation.</li>
@@ -44,7 +61,8 @@
 <li>Added two-direction reduction for arbitrary omitted-confounder blocks.</li>
 <li>Added frozen cross-language numerical fixtures, <code>sensemakr</code> comparison, and <code>sandwich</code> covariance validation.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

@@ -29,11 +29,13 @@ evaluate_subspace(
 
 - vcov:
 
-  One of `"classical"`, `"HC0"`, `"HC1"`, `"CR0"`, or `"CR1"`.
+  Classical, a built-in sandwich estimator, or a fixed covariance rule
+  (see
+  [`fixed_hac_rule`](https://JanAcedanski.github.io/RobustSandwichRV/reference/fixed_score_rules.md)).
 
 - cluster:
 
-  Optional one-way cluster labels.
+  One-way labels or two-column data frame/matrix for two-way clustering.
 
 - original_rank:
 

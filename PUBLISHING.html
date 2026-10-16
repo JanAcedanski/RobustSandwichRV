@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">RobustSandwichRV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,26 +35,18 @@
 
 <div id="publishing-on-github" class="section level1">
 
-<p>The repository is ready to publish after choosing the GitHub account or organization that will own it.</p>
-<ol style="list-style-type: decimal"><li>
-<p>Configure repository-specific links:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">Rscript</span> tools/configure-github.R GITHUB_OWNER</span></code></pre></div>
-</li>
+<p>Repository: <a href="https://github.com/JanAcedanski/RobustSandwichRV" class="external-link uri">https://github.com/JanAcedanski/RobustSandwichRV</a></p>
+<ol style="list-style-type: decimal"><li><p>Update <code>DESCRIPTION</code>, <code>NEWS.md</code>, and the version-pinned installation command in both <code>README.md</code> and <code>README.Rmd</code>. Keep their main content identical.</p></li>
 <li>
-<p>Run the local checks:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">R</span> CMD build .</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">R</span> CMD check <span class="at">--no-manual</span> RobustSandwichRV_0.1.0.tar.gz</span></code></pre></div>
+<p>Run the quick-start demo and the package checks:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">Rscript</span> tools/check-local.R .</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">R</span> CMD build .</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">R</span> CMD check <span class="at">--no-manual</span> RobustSandwichRV_0.5.0.tar.gz</span></code></pre></div>
 </li>
-<li>
-<p>Create an empty public repository named <code>RobustSandwichRV</code>, then push:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">git</span> init</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">git</span> add .</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Initial pure-R RobustSandwichRV release"</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-M</span> main</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/GITHUB_OWNER/RobustSandwichRV.git</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div>
-</li>
-</ol><p>The included workflows run <code>R CMD check</code> on Windows, macOS, and Linux and deploy the pkgdown site to the <code>gh-pages</code> branch. Enable GitHub Pages for that branch after the first successful site build.</p>
+<li><p>Commit the reviewed source and push <code>main</code>. Inspect the R-CMD-check and pkgdown workflows. The check matrix covers Windows, macOS, and Linux.</p></li>
+<li><p>Create tag <code>v0.5.0</code> at the tested source commit and publish a GitHub release with release notes, <code>RobustSandwichRV_0.5.0.tar.gz</code>, and <code>SHA256SUMS</code>.</p></li>
+<li><p>Verify installation from the tag in a clean R library and run <code>demo("quick-start", package = "RobustSandwichRV", ask = FALSE)</code>.</p></li>
+</ol><p>The pkgdown workflow deploys the documentation to the <code>gh-pages</code> branch. The source archive is an R source package, not a platform-specific binary. For the next release, replace <code>0.5.0</code> in these steps with the new version.</p>
 </div>
 
   </main></div>

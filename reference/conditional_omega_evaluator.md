@@ -18,11 +18,13 @@ conditional_omega_evaluator(cache, vcov = "HC1", cluster = NULL)
 
 - vcov:
 
-  HC0, HC1, CR0, or CR1.
+  HC0/HC1, one-way CR0/CR1, HAC_Bartlett_L4, HAC_QS_BW5, TWCR0_raw,
+  TWCR1_raw, or a fixed covariance rule.
 
 - cluster:
 
-  Optional one-way cluster labels.
+  One-way labels or a two-column data frame/matrix for two-way
+  clustering.
 
 ## Value
 

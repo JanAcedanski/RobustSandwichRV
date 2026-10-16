@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Certified Robustness Values with Sandwich Standard Errors • RobustSandwichRV</title>
+<title>Sandwich robustness values for applied regression • RobustSandwichRV</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Certified Robustness Values with Sandwich Standard Errors">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Sandwich robustness values for applied regression">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RobustSandwichRV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Certified Robustness Values with Sandwich Standard Errors</h1>
+      <h1>Sandwich robustness values for applied regression</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/JanAcedanski/RobustSandwichRV/blob/main/vignettes/robust-sandwich-rv.Rmd" class="external-link"><code>vignettes/robust-sandwich-rv.Rmd</code></a></small>
@@ -61,170 +61,213 @@
     
     
 <div class="section level2">
-<h2 id="the-object-being-computed">The object being computed<a class="anchor" aria-label="anchor" href="#the-object-being-computed"></a>
+<h2 id="start-from-the-reported-finding">Start from the reported finding<a class="anchor" aria-label="anchor" href="#start-from-the-reported-finding"></a>
 </h2>
-<p>For a scalar omitted confounder, let</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msubsup><mi>R</mi><mrow><mi>D</mi><mo>∼</mo><mi>Z</mi><mo>∣</mo><mi>X</mi></mrow><mn>2</mn></msubsup><mo>,</mo><mspace width="2.0em"></mspace><mi>y</mi><mo>=</mo><msubsup><mi>R</mi><mrow><mi>Y</mi><mo>∼</mo><mi>Z</mi><mo>∣</mo><mi>D</mi><mo>,</mo><mi>X</mi></mrow><mn>2</mn></msubsup><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>ω</mi><mi>R</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>s</mi><msub><mi>e</mi><mi>R</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>τ</mi><mo accent="true">̂</mo></mover><mi>f</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>s</mi><msub><mi>e</mi><mi>C</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>τ</mi><mo accent="true">̂</mo></mover><mi>f</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
-x=R^2_{D\sim Z\mid X},\qquad
-y=R^2_{Y\sim Z\mid D,X},\qquad
-\omega_R(Z)=\frac{se_R(\widehat\tau_f)}{se_C(\widehat\tau_f)}.
-</annotation></semantics></math></p>
-<p>The bounded calibrated value uses an observed-control magnitude
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
-and the zero-strength synthetic-index origin
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ω</mi><mrow><mi>R</mi><mo>,</mo><mn>00</mn></mrow></msub><annotation encoding="application/x-tex">\omega_{R,00}</annotation></semantics></math>:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝒲</mi><mi>R</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><msub><mi>ω</mi><mrow><mi>R</mi><mo>,</mo><mn>00</mn></mrow></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>b</mi></mrow></msup><mo>,</mo><msub><mi>ω</mi><mrow><mi>R</mi><mo>,</mo><mn>00</mn></mrow></msub><msup><mi>e</mi><mi>b</mi></msup><mo stretchy="false" form="postfix">]</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
-\mathcal W_R(b)=
-[\omega_{R,00}e^{-b},\omega_{R,00}e^b].
-</annotation></semantics></math></p>
-<p>It finds the smallest
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">max</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\max(x,y)</annotation></semantics></math>
-among attainable confounders that change the robust test decision and
-have
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mi>R</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><msub><mi>𝒲</mi><mi>R</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\omega_R(Z)\in\mathcal W_R(b)</annotation></semantics></math>.</p>
-<p>The software first computes an analytical protected lower bound at
-the adverse band endpoint. It then either certifies equality
-constructively or returns the best independently refitted witness as a
-certified upper bound.</p>
-<p>The result records <code>theorem_exact</code> separately from
-<code>numerically_closed</code>. The former requires the
-adverse-endpoint equality certificate; the latter only means that a
-verified lower–upper interval is no wider than the stated numerical
-tolerance.</p>
+<p>The three sandwich measures ask how weak an added scalar index can be
+while removing significance under the maintained sandwich test. Its
+strength is <code>max(x,y)</code>, where x and y are the target-side and
+outcome-side partial R-squared. The same index generates the coefficient
+and SE change.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">80</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">.8</span> <span class="op">*</span> <span class="va">d</span> <span class="op">+</span> <span class="fl">.4</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">d</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">w</span><span class="op">)</span></span>
+<span><span class="va">rv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sandwich_rv.html">sandwich_rv</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"d"</span>, benchmarks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"w"</span><span class="op">)</span>, vcov <span class="op">=</span> <span class="st">"HC1"</span>,</span>
+<span>                   n_starts <span class="op">=</span> <span class="fl">4</span>, max_iterations <span class="op">=</span> <span class="fl">30</span>, search_steps <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="va">rv</span></span>
+<span><span class="co">#&gt; Robustness values for loss of significance (partial R-squared scale)</span></span>
+<span><span class="co">#&gt;         measure estimate     lower    upper            status benchmark</span></span>
+<span><span class="co">#&gt;           RV_CH 0.371171 0.3711710 0.371171        ANALYTICAL      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;         RV_sand       NA 0.0501088 0.123037  CERTIFIED_BOUNDS      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;    RV_cal_delta 0.342267 0.3422672 0.342267 POINT_CERTIFICATE  positive</span></span>
+<span><span class="co">#&gt;  RV_cal_profile 0.341822 0.3418223 0.341822 POINT_CERTIFICATE  positive</span></span>
+<span><span class="co">#&gt;  critical</span></span>
+<span><span class="co">#&gt;    1.9921</span></span>
+<span><span class="co">#&gt;    1.9921</span></span>
+<span><span class="co">#&gt;    1.9921</span></span>
+<span><span class="co">#&gt;    1.9921</span></span>
+<span><span class="co">#&gt; Profile multiplier k = 1 </span></span>
+<span><span class="co">#&gt; Bounds are computational intervals; see status for unavailable or unresolved values.</span></span></code></pre></div>
+<p>The CH row uses the same cutoff as the sandwich test. The
+conventional reference with its own default cutoff is also stored in
+<code>rv$RV_CH_standard</code>. To reproduce a reported test exactly,
+supply its fixed <code>critical</code> value. HC defaults use augmented
+residual degrees of freedom; CR defaults use the number of clusters
+minus one. Observation order and rows stay fixed.</p>
 </div>
 <div class="section level2">
-<h2 id="reproducible-hc1-example">Reproducible HC1 example<a class="anchor" aria-label="anchor" href="#reproducible-hc1-example"></a>
+<h2 id="choose-credible-observed-control-benchmarks">Choose credible observed-control benchmarks<a class="anchor" aria-label="anchor" href="#choose-credible-observed-control-benchmarks"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260809</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">120</span></span>
-<span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">0.4</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">-</span> <span class="fl">0.2</span> <span class="op">*</span> <span class="va">x2</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="va">e</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.7</span> <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">0.55</span> <span class="op">*</span> <span class="va">d</span> <span class="op">+</span> <span class="fl">0.25</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">-</span> <span class="fl">0.15</span> <span class="op">*</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">e</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">d</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span><span class="op">)</span></span></code></pre></div>
-<p>We use <code>x1</code> as an observed scalar benchmark.</p>
+<p>Increment calibration caps the ratio omega = sandwich SE /
+conventional SE at <code>omega_full + max(0,max(delta_omega))</code>,
+where each delta is the signed change when a deleted control is
+restored. The reduced models calibrate the cap; the omitted-variable
+search uses the original full model.</p>
+<p>Profile calibration caps omega at
+<code>a0*exp(k*min(L,beta*(sqrt(x)+sqrt(y))))</code>. It adjusts
+restoring log increments to a common finite-sample correction. L is
+their positive maximum and beta is the largest positive increment per
+<code>sqrt(x)+sqrt(y)</code> in the reduced model. The augmented
+zero-strength origin a0 uses the candidate model’s correction. The
+reference multiplier is k=1; k=2 is a sensitivity scenario.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/benchmark_from_model.html">benchmark_from_model</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"d"</span>, <span class="st">"x1"</span>, vcov <span class="op">=</span> <span class="st">"HC1"</span><span class="op">)</span></span>
-<span><span class="va">benchmark</span></span>
-<span><span class="co">#&gt; Observed-control benchmark calibration</span></span>
-<span><span class="co">#&gt;   Name: x1 </span></span>
-<span><span class="co">#&gt;   Type / rank: scalar / 1 </span></span>
-<span><span class="co">#&gt;   Signed per-rank delta_L: 0.03733079 </span></span>
-<span><span class="co">#&gt;   Bounded magnitude b: 0.03733079</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/robust_rv.html">robust_rv</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"d"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"HC1"</span>,</span>
-<span>  benchmark <span class="op">=</span> <span class="va">benchmark</span>,</span>
-<span>  n_starts <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>  max_iterations <span class="op">=</span> <span class="fl">20</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">result</span></span>
-<span><span class="co">#&gt; Benchmark-bounded robust RV </span></span>
+<code class="sourceCode R"><span><span class="va">rv</span><span class="op">$</span><span class="va">benchmark</span><span class="op">$</span><span class="va">records</span></span>
+<span><span class="co">#&gt;   benchmark rank omega_full omega_minus omega_minus_common_chi delta_omega</span></span>
+<span><span class="co">#&gt; 1         x    1   1.143028    1.085909               1.085909  0.05711896</span></span>
+<span><span class="co">#&gt; 2         w    1   1.143028    1.205470               1.205470 -0.06244190</span></span>
+<span><span class="co">#&gt;   log_increment       r2_d       r2_y    slope    status profile_valid error</span></span>
+<span><span class="co">#&gt; 1    0.05126343 0.08607993 0.02674409 0.112191 AVAILABLE          TRUE      </span></span>
+<span><span class="co">#&gt; 2   -0.05318858 0.02776279 0.04691219 0.000000 AVAILABLE          TRUE</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>M_delta <span class="op">=</span> <span class="va">rv</span><span class="op">$</span><span class="va">benchmark</span><span class="op">$</span><span class="va">M_delta</span>,</span>
+<span>  L <span class="op">=</span> <span class="va">rv</span><span class="op">$</span><span class="va">benchmark</span><span class="op">$</span><span class="va">L</span>, beta <span class="op">=</span> <span class="va">rv</span><span class="op">$</span><span class="va">benchmark</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    M_delta          L       beta </span></span>
+<span><span class="co">#&gt; 1.20014673 0.05126343 0.11219099</span></span>
+<span><span class="va">profile_k2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rv_cal.html">rv_cal</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"d"</span>, <span class="st">"profile"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"w"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                      n_starts <span class="op">=</span> <span class="fl">4</span>, max_iterations <span class="op">=</span> <span class="fl">30</span>, search_steps <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="va">profile_k2</span></span>
+<span><span class="co">#&gt; RV_cal_profile </span></span>
 <span><span class="co">#&gt;   Covariance: HC1 </span></span>
 <span><span class="co">#&gt;   Baseline decision: reject </span></span>
-<span><span class="co">#&gt;   Status: EXACT_BOUNDED_RV / ADVERSE_ENDPOINT_PROTECTED_DIAGONAL </span></span>
-<span><span class="co">#&gt;   Certificate: adverse_endpoint_equality </span></span>
-<span><span class="co">#&gt;   Certified lower bound: 0.2092966 </span></span>
-<span><span class="co">#&gt;   Certified upper bound: 0.2092966 </span></span>
-<span><span class="co">#&gt;   Reported RV: 0.2092966 </span></span>
-<span><span class="co">#&gt;   Witness omega / robust t: 1.400975 / 1.980806 </span></span>
-<span><span class="co">#&gt;   Runtime: 0.119 seconds</span></span></code></pre></div>
-<p><code>RV_lower</code> is analytical. A finite <code>RV_upper</code>
-always has an explicit <code>best_witness_z</code> and
-<code>direct_refit_valid = TRUE</code>. <code>LOWER_BOUND_ONLY</code>
-means that the numerical search did not find an upper witness; it is not
-a global infeasibility statement.</p>
+<span><span class="co">#&gt;   Status: POINT_CERTIFICATE / profile </span></span>
+<span><span class="co">#&gt;   Benchmark: positive </span></span>
+<span><span class="co">#&gt;   Certificate: verified_interval_within_tolerance </span></span>
+<span><span class="co">#&gt;   Certified lower bound: 0.3323726 </span></span>
+<span><span class="co">#&gt;   Certified upper bound: 0.3323726 </span></span>
+<span><span class="co">#&gt;   Reported RV: 0.3323726 </span></span>
+<span><span class="co">#&gt;   Witness omega / robust t: 1.266437 / 1.992102 </span></span>
+<span><span class="co">#&gt;   Runtime: 0.017 seconds</span></span></code></pre></div>
+<p>Both calibrated classes permit 0 &lt; omega &lt;= cap, including
+omega below one. Neither calibration generally contains the other.
+Observed controls inform an explicit similarity assumption about omitted
+variables.</p>
+<p>Negative increments remain in the records. If the complete scalar
+pool has no positive log increment, L=beta=0 and the profile becomes the
+constant cap a0 for all k. Empty or incomplete pools are unavailable,
+not zero benchmarks.</p>
+<p>A character vector lists separate scalar controls. A named list
+specifies whole blocks, for example
+<code>list(village = "factor(village)")</code>. Increment calibration
+uses the full block change without rank division. Use separate scalar
+and block pools. Profile calibration requires scalar units.</p>
 </div>
 <div class="section level2">
-<h2 id="cr1-uses-the-same-algorithm">CR1 uses the same algorithm<a class="anchor" aria-label="anchor" href="#cr1-uses-the-same-algorithm"></a>
+<h2 id="interpret-and-verify-the-computational-bounds">Interpret and verify the computational bounds<a class="anchor" aria-label="anchor" href="#interpret-and-verify-the-computational-bounds"></a>
+</h2>
+<p>A small verified upper bound establishes that a weak index can remove
+significance. A large analytical lower bound establishes robustness
+within the stated class. If the bounds do not resolve the comparison,
+retain the interval. A missing upper endpoint means the search found no
+verified index; it is not a proof that the class is empty. These
+intervals describe numerical knowledge of a fixed-sample minimum and are
+not confidence intervals.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">value</span> <span class="op">&lt;-</span> <span class="va">rv</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">RV_cal_profile</span></span>
+<span><span class="va">cache</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cache_from_lm.html">cache_from_lm</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"d"</span><span class="op">)</span></span>
+<span><span class="va">check</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_confounder_reference.html">evaluate_confounder_reference</a></span><span class="op">(</span><span class="va">cache</span>, <span class="va">value</span><span class="op">$</span><span class="va">best_witness_z</span>, vcov <span class="op">=</span> <span class="st">"HC1"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">check</span><span class="op">$</span><span class="va">r2_d</span>, y <span class="op">=</span> <span class="va">check</span><span class="op">$</span><span class="va">r2_y</span>, omega <span class="op">=</span> <span class="va">check</span><span class="op">$</span><span class="va">omega</span>, t <span class="op">=</span> <span class="va">check</span><span class="op">$</span><span class="va">t_robust</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         x         y     omega         t </span></span>
+<span><span class="co">#&gt; 0.3418223 0.3418223 1.2031512 1.9921022</span></span>
+<span><span class="va">value</span><span class="op">$</span><span class="va">control</span></span>
+<span><span class="co">#&gt; $n_starts</span></span>
+<span><span class="co">#&gt; [1] 4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $max_iterations</span></span>
+<span><span class="co">#&gt; [1] 30</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $seed</span></span>
+<span><span class="co">#&gt; [1] 1234</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tolerance</span></span>
+<span><span class="co">#&gt; [1] 5e-08</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $max_radius</span></span>
+<span><span class="co">#&gt; [1] 0.999999</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $search_steps</span></span>
+<span><span class="co">#&gt; [1] 6</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $run_search</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>Every finite upper bound is the actual strength of an independently
+refitted index. <code>rv</code> is missing unless lower and upper meet
+within the requested tolerance. Boundary attainment and literal strict
+loss have separate flags. If the observed test already does not reject,
+loss RV is zero by convention.</p>
+<p>The lower bound uses an analytical continuous score envelope and the
+protected CH formula. Its derivation is installed in
+<code>LOWER-BOUND.txt</code>. Failed local searches never increase it.
+Different solvers or stronger analytical bounds may give different
+widths for the same estimand. Ordinary floating-point certificates are
+not formal interval arithmetic.</p>
+</div>
+<div class="section level2">
+<h2 id="supported-models-and-reproducibility">Supported models and reproducibility<a class="anchor" aria-label="anchor" href="#supported-models-and-reproducibility"></a>
+</h2>
+<p>The current R interfaces support unweighted, full-rank lm models with
+an intercept, a scalar target, HC0/HC1, one-way or raw two-way CR0/CR1,
+and fixed-kernel HAC. Cluster vectors must align with rows retained by
+lm. A cluster formula is evaluated in the stored model frame. Weighted
+fits, adaptive HAC tuning and leverage-dependent corrections require
+further implementation.</p>
+<p>Set a local <code>seed</code> and retain the result object to
+preserve settings, benchmark records, witnesses and refits. The caller’s
+RNG state is unchanged. Julia is not needed for installation or
+analysis. Older <code><a href="../reference/robust_rv.html">robust_rv()</a></code>, <code><a href="../reference/rv_cal_bounded.html">rv_cal_bounded()</a></code>
+and <code><a href="../reference/conditional_omega_rv.html">conditional_omega_rv()</a></code> preserve their original
+point/symmetric-band objects; the current manuscript’s entry points are
+<code><a href="../reference/sandwich_rv.html">sandwich_rv()</a></code>, <code><a href="../reference/rv_sand.html">rv_sand()</a></code> and
+<code><a href="../reference/rv_cal.html">rv_cal()</a></code>.</p>
+</div>
+<div class="section level2">
+<h2 id="fixed-hac-and-raw-two-way-rules">Fixed HAC and raw two-way rules<a class="anchor" aria-label="anchor" href="#fixed-hac-and-raw-two-way-rules"></a>
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="va">cluster_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/benchmark_from_model.html">benchmark_from_model</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>, <span class="st">"d"</span>, <span class="st">"x1"</span>, vcov <span class="op">=</span> <span class="st">"CR1"</span>, cluster <span class="op">=</span> <span class="va">cluster</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">cluster_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/robust_rv.html">robust_rv</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"d"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"CR1"</span>,</span>
-<span>  cluster <span class="op">=</span> <span class="va">cluster</span>,</span>
-<span>  benchmark <span class="op">=</span> <span class="va">cluster_benchmark</span>,</span>
-<span>  n_starts <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>  max_iterations <span class="op">=</span> <span class="fl">20</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">cluster_result</span></span>
-<span><span class="co">#&gt; Benchmark-bounded robust RV </span></span>
-<span><span class="co">#&gt;   Covariance: CR1 </span></span>
+<code class="sourceCode R"><span><span class="va">hac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rv_cal.html">rv_cal</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"d"</span>, <span class="st">"profile"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"w"</span><span class="op">)</span>,</span>
+<span>                vcov <span class="op">=</span> <span class="st">"HAC_Bartlett_L4"</span>, n_starts <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>                max_iterations <span class="op">=</span> <span class="fl">30</span>, search_steps <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">hac</span></span>
+<span><span class="co">#&gt; RV_cal_profile </span></span>
+<span><span class="co">#&gt;   Covariance: HAC_Bartlett_L4 </span></span>
 <span><span class="co">#&gt;   Baseline decision: reject </span></span>
-<span><span class="co">#&gt;   Status: EXACT_BOUNDED_RV / ADVERSE_ENDPOINT_PROTECTED_DIAGONAL </span></span>
-<span><span class="co">#&gt;   Certificate: adverse_endpoint_equality </span></span>
-<span><span class="co">#&gt;   Certified lower bound: 0.1390936 </span></span>
-<span><span class="co">#&gt;   Certified upper bound: 0.1390936 </span></span>
-<span><span class="co">#&gt;   Reported RV: 0.1390936 </span></span>
-<span><span class="co">#&gt;   Witness omega / robust t: 1.677225 / 2.200985 </span></span>
-<span><span class="co">#&gt;   Runtime: 0.047 seconds</span></span></code></pre></div>
-<p>Only the score aggregation changes: HC sums squared observation
-scores, while CR first sums scores within clusters. Protected formulas,
-bracketing, spherical root finding, fallback logic, and direct
-validation are shared.</p>
-</div>
-<div class="section level2">
-<h2 id="point-conditioning">Point conditioning<a class="anchor" aria-label="anchor" href="#point-conditioning"></a>
-</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">point_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/conditional_omega_rv.html">conditional_omega_rv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/cache_from_lm.html">cache_from_lm</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"d"</span><span class="op">)</span>,</span>
-<span>  omega_target <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"HC1"</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"protected_first"</span>,</span>
-<span>  n_starts <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>  max_iterations <span class="op">=</span> <span class="fl">20</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">point_result</span></span>
-<span><span class="co">#&gt; Point-conditioned robust RV </span></span>
-<span><span class="co">#&gt;   Covariance: HC1 </span></span>
-<span><span class="co">#&gt;   Baseline decision: reject </span></span>
-<span><span class="co">#&gt;   Status: EXACT_POINT_RV / PROTECTED_DIAGONAL </span></span>
-<span><span class="co">#&gt;   Certified lower bound: 0.265243 </span></span>
-<span><span class="co">#&gt;   Certified upper bound: 0.265243 </span></span>
-<span><span class="co">#&gt;   Reported RV: 0.265243 </span></span>
-<span><span class="co">#&gt;   Witness omega / robust t: 1 / 1.980808 </span></span>
-<span><span class="co">#&gt;   Runtime: 0.045 seconds</span></span></code></pre></div>
-<p>Point conditioning is useful for theory and diagnostics, but it
-imposes one exact signed sandwich ratio. Bounded calibration is the
-recommended observed-control workflow.</p>
-</div>
-<div class="section level2">
-<h2 id="refit-the-witness-explicitly">Refit the witness explicitly<a class="anchor" aria-label="anchor" href="#refit-the-witness-explicitly"></a>
-</h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">best_witness_z</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">witness</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluate_confounder_reference.html">evaluate_confounder_reference</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/cache_from_lm.html">cache_from_lm</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"d"</span><span class="op">)</span>,</span>
-<span>    <span class="va">result</span><span class="op">$</span><span class="va">best_witness_z</span>,</span>
-<span>    vcov <span class="op">=</span> <span class="st">"HC1"</span></span>
-<span>  <span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    x <span class="op">=</span> <span class="va">witness</span><span class="op">$</span><span class="va">r2_d</span>,</span>
-<span>    y <span class="op">=</span> <span class="va">witness</span><span class="op">$</span><span class="va">r2_y</span>,</span>
-<span>    omega <span class="op">=</span> <span class="va">witness</span><span class="op">$</span><span class="va">omega</span>,</span>
-<span>    robust_t <span class="op">=</span> <span class="va">witness</span><span class="op">$</span><span class="va">t_robust</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co">#&gt;         x         y     omega  robust_t </span></span>
-<span><span class="co">#&gt; 0.2092968 0.2092968 1.4009752 1.9808056</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
-</h2>
-<p>Version 0.1.0 supports unweighted linear regression and one-way
-clustering. HC2, HC3, CR2, HAC, weighted least squares, generalized
-linear models, and critical values that change with the omitted
-confounder are outside the current certificate theory.</p>
+<span><span class="co">#&gt;   Status: POINT_CERTIFICATE / profile </span></span>
+<span><span class="co">#&gt;   Benchmark: positive </span></span>
+<span><span class="co">#&gt;   Certificate: verified_interval_within_tolerance </span></span>
+<span><span class="co">#&gt;   Certified lower bound: 0.3476631 </span></span>
+<span><span class="co">#&gt;   Certified upper bound: 0.3476631 </span></span>
+<span><span class="co">#&gt;   Reported RV: 0.3476631 </span></span>
+<span><span class="co">#&gt;   Witness omega / robust t: 1.163531 / 1.992102 </span></span>
+<span><span class="co">#&gt;   Runtime: 0.014 seconds</span></span>
+<span><span class="fu"><a href="../reference/fixed_score_rules.html">fixed_hac_rule</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>, <span class="st">"QS"</span>, bandwidth <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Fixed sandwich covariance rule: HAC_QS_BW5 </span></span>
+<span><span class="co">#&gt;   Observations: 80 </span></span>
+<span><span class="co">#&gt;   PSD repair: none</span></span>
+<span><span class="fu"><a href="../reference/fixed_score_rules.html">fixed_twoway_cluster_rule</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, each <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Fixed sandwich covariance rule: TWCR1_raw </span></span>
+<span><span class="co">#&gt;   Observations: 80 </span></span>
+<span><span class="co">#&gt;   PSD repair: none</span></span></code></pre></div>
+<p><code>HAC_Bartlett_L4</code> and <code>HAC_QS_BW5</code> match the
+article: fixed retained-row order, fixed weights, no prewhitening and no
+adjustment. The generic HAC constructor also allows an explicit row
+permutation and an n/df adjustment. All choices remain fixed during
+candidate and deletion refits.</p>
+<p>For <code>TWCR1_raw</code>, pass
+<code>cluster = data.frame(first, second)</code> or a two-variable
+formula with labels aligned to fitted rows. A rule from
+<code>fixed_twoway_cluster_rule(first, second)</code> can be passed
+directly as <code>vcov</code>. The three component factors are
+G1/(G1-1), G2/(G2-1), and G12/(G12-1), with a common (n-1)/df factor.
+The default cutoff df is min(G1,G2)-1.</p>
+<p>No PSD repair is applied. Intermediate negative signed forms are
+allowed in direction optimization and positive-target bracketing; every
+reported index must have a strictly positive refitted target variance.
+Invalid observed variances stop analysis, and invalid deletion variances
+make the prescribed calibration unavailable. The indefinite lower
+envelope is derived separately in the installed
+<code>LOWER-BOUND.txt</code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

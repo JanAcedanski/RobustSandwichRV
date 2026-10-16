@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Certified Robustness Values with Sandwich Standard Errors">
-<meta name="description" content="Computes sample robustness values for omitted-variable sensitivity analysis in linear regression when inference uses classical, HC0, HC1, CR0, or CR1 standard errors. Implements point-conditioned and benchmark-bounded calibration, analytical protected lower bounds, constructive confounder witnesses, and independent full-regression validation. The package uses Cinelli-Hazlett partial-R-squared geometry but explicitly accounts for attainable sandwich standard-error ratios.">
-<meta property="og:description" content="Computes sample robustness values for omitted-variable sensitivity analysis in linear regression when inference uses classical, HC0, HC1, CR0, or CR1 standard errors. Implements point-conditioned and benchmark-bounded calibration, analytical protected lower bounds, constructive confounder witnesses, and independent full-regression validation. The package uses Cinelli-Hazlett partial-R-squared geometry but explicitly accounts for attainable sandwich standard-error ratios.">
+<meta name="description" content="Computes sample robustness values for omitted-variable sensitivity analysis in linear regression when inference uses classical, HC0, HC1, one-way or raw two-way cluster, and fixed-kernel HAC standard errors. Computes unrestricted sandwich, restoring-increment and strength-dependent profile robustness values, analytical lower bounds, constructive confounder witnesses, and independent full-regression validation. The package uses Cinelli-Hazlett partial-R-squared geometry but explicitly accounts for attainable sandwich standard-error ratios.">
+<meta property="og:description" content="Computes sample robustness values for omitted-variable sensitivity analysis in linear regression when inference uses classical, HC0, HC1, one-way or raw two-way cluster, and fixed-kernel HAC standard errors. Computes unrestricted sandwich, restoring-increment and strength-dependent profile robustness values, analytical lower bounds, constructive confounder witnesses, and independent full-regression validation. The package uses Cinelli-Hazlett partial-R-squared geometry but explicitly accounts for attainable sandwich standard-error ratios.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">RobustSandwichRV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,120 +50,118 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="robustsandwichrv">RobustSandwichRV<a class="anchor" aria-label="anchor" href="#robustsandwichrv"></a>
 </h1></div>
-<!-- badges: start -->
-
-<p><code>RobustSandwichRV</code> computes omitted-variable robustness values for linear regressions using classical, HC0, HC1, CR0, or CR1 standard errors. It combines Cinelli–Hazlett partial-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math> geometry with the sample attainability of the sandwich-to-classical standard-error ratio.</p>
-<p>The recommended observed-control workflow is <strong>benchmark-bounded calibration</strong>. It reports</p>
-<pre class="text"><code>analytical protected lower bound &lt;= calibrated RV &lt;= verified witness upper bound</code></pre>
-<p>and labels equality as exact only when supported by a constructive certificate from the adverse-endpoint theorem. A separately labelled numerically closed result means that the verified interval is within a declared tolerance, not that the theorem supplied equality. Every finite upper endpoint is an explicit confounder checked in an independent full-regression refit.</p>
-<p>The package is implemented entirely in R. Julia is not needed to install, test, or use it.</p>
+<p>Pure R sensitivity analysis for linear regressions using HC0/HC1, one- or two-way CR0/CR1, and fixed-kernel HAC standard errors. Version 0.5.0 computes the current manuscript’s <strong>RV_sand</strong>, <strong>RV_cal^Delta</strong>, and <strong>RV_cal^prof(k)</strong> on the Cinelli-Hazlett partial R-squared scale. Julia is not required.</p>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="install-version-050-from-github">Install version 0.5.0 from GitHub<a class="anchor" aria-label="anchor" href="#install-version-050-from-github"></a>
 </h2>
+<p>Run these commands in R (R 4.2 or newer):</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>  <span class="co"># only needed once</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"JanAcedanski/RobustSandwichRV@v0.5.0"</span><span class="op">)</span></span></code></pre></div>
+<p>The <a href="https://github.com/JanAcedanski/RobustSandwichRV/releases/tag/v0.5.0" class="external-link">0.5.0 release</a> also includes the source archive <code>RobustSandwichRV_0.5.0.tar.gz</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="quick-start-one-table-from-your-regression">Quick start: one table from your regression<a class="anchor" aria-label="anchor" href="#quick-start-one-table-from-your-regression"></a>
+</h2>
+<p>This complete example uses the built-in <code>mtcars</code> data. Here <code>wt</code> is the coefficient being assessed, and <code>hp</code> and <code>disp</code> are observed controls used to calibrate the two <code>RV_cal</code> measures.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"JanAcedanski/RobustSandwichRV"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="hc1-example">HC1 example<a class="anchor" aria-label="anchor" href="#hc1-example"></a>
-</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JanAcedanski/RobustSandwichRV" class="external-link">RobustSandwichRV</a></span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">disp</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">treatment</span> <span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">female</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">village</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/robust_rv.html">robust_rv</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"HC1"</span>,</span>
-<span>  calibration <span class="op">=</span> <span class="st">"bounded"</span>,</span>
-<span>  benchmark <span class="op">=</span> <span class="st">"female"</span></span>
+<span><span class="va">rv</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sandwich_rv.html">sandwich_rv</a></span><span class="op">(</span></span>
+<span>  <span class="va">fit</span>, treatment <span class="op">=</span> <span class="st">"wt"</span>, vcov <span class="op">=</span> <span class="st">"HC1"</span>,</span>
+<span>  benchmarks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">result</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">rv</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">rv</span><span class="op">)</span></span></code></pre></div>
+<p>For your own application, replace the regression, the target coefficient name, and the benchmark control names. <code>vcov = "HC1"</code> selects heteroskedasticity-robust standard errors; the HAC and clustering options are illustrated below. The same example is installed with the package:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"quick-start"</span>, package <span class="op">=</span> <span class="st">"RobustSandwichRV"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>The four rows are CH, unrestricted sandwich, increment calibrated, and profile calibrated robustness. CH uses the same test cutoff as the sandwich rows; the conventional default-cutoff reference is retained in <code>rv$RV_CH_standard</code>. The profile reference is <code>k = 1</code>; rerun with <code>k = 2</code> to assess that assumption.</p>
+<p><code>estimate</code> is populated only when the analytical lower and independently verified upper bounds meet within the declared numerical tolerance. Otherwise, report <code>[lower, upper]</code>. An <code>NA</code> upper bound means no admissible loss index was found. A failed local search does not establish that the candidate class is empty. These are computational intervals, not confidence intervals.</p>
+<p>Values use a 0–1 partial-R-squared scale: <code>0.10</code> means 10%, not 0.10%. For each row, the RV is the minimum common upper limit on the omitted index’s two partial R-squared strengths needed to reach loss of significance, under that row’s assumptions. Smaller values indicate greater sensitivity. The two calibrated rows additionally impose the observed-control restrictions described below. If the original test does not reject, its loss RV is zero.</p>
+<p>In this example, <code>benchmark = "zero"</code> indicates that neither control supplies a positive restoring increment. Here the two calibrated values coincide; inspect <code>rv$benchmark$records</code> for your own data.</p>
 </div>
 <div class="section level2">
-<h2 id="one-way-cr1-example">One-way CR1 example<a class="anchor" aria-label="anchor" href="#one-way-cr1-example"></a>
+<h2 id="individual-calculations">Individual calculations<a class="anchor" aria-label="anchor" href="#individual-calculations"></a>
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">clustered</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/robust_rv.html">robust_rv</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"CR1"</span>,</span>
-<span>  cluster <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">village</span>,</span>
-<span>  calibration <span class="op">=</span> <span class="st">"bounded"</span>,</span>
-<span>  benchmark <span class="op">=</span> <span class="st">"female"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>If the cluster variable is present in the fitted model frame, a formula can be used:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">clustered</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/robust_rv.html">robust_rv</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"CR1"</span>,</span>
-<span>  cluster <span class="op">=</span> <span class="op">~</span> <span class="va">village</span>,</span>
-<span>  benchmark <span class="op">=</span> <span class="st">"female"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="grouped-benchmarks">Grouped benchmarks<a class="anchor" aria-label="anchor" href="#grouped-benchmarks"></a>
-</h2>
-<p>A factor or a vector of observed terms is treated as a block. Its score- alignment change is divided by the block’s <strong>numerical rank</strong> before it is used to calibrate one synthetic omitted index.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">group_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/benchmark_from_model.html">benchmark_from_model</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
-<span>  benchmark <span class="op">=</span> <span class="st">"factor(village)"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"HC1"</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/rv_sand.html">rv_sand</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, vcov <span class="op">=</span> <span class="st">"HC1"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/rv_cal.html">rv_cal</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="st">"increment"</span>, benchmarks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/rv_cal.html">rv_cal</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="st">"profile"</span>, benchmarks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">group_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/robust_rv.html">robust_rv</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"HC1"</span>,</span>
-<span>  benchmark <span class="op">=</span> <span class="va">group_benchmark</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># User-specified ratio cap: 0 &lt; omega &lt;= 1.2</span></span>
+<span><span class="fu"><a href="reference/rv_cal.html">rv_cal</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="st">"cap"</span>, M <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></span></code></pre></div>
+<p>For one-way clustering, use <code>vcov = "CR1"</code> and cluster labels aligned with the rows retained by <code>lm</code>. A cluster formula works when its variable is present in the stored model frame. Supply <code>critical = ...</code> to reproduce an application’s reported cutoff exactly; the chosen cutoff stays fixed during the search.</p>
 </div>
 <div class="section level2">
-<h2 id="point-conditioned-diagnostics">Point-conditioned diagnostics<a class="anchor" aria-label="anchor" href="#point-conditioned-diagnostics"></a>
+<h2 id="hac-and-two-way-clustering">HAC and two-way clustering<a class="anchor" aria-label="anchor" href="#hac-and-two-way-clustering"></a>
 </h2>
-<p>The earlier signed point-omega object remains explicitly available:</p>
+<p>The article’s HAC settings have direct aliases:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hac_bartlett</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sandwich_rv.html">sandwich_rv</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span>,</span>
+<span>                             vcov <span class="op">=</span> <span class="st">"HAC_Bartlett_L4"</span><span class="op">)</span></span>
+<span><span class="va">hac_qs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sandwich_rv.html">sandwich_rv</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span>,</span>
+<span>                       vcov <span class="op">=</span> <span class="st">"HAC_QS_BW5"</span><span class="op">)</span></span></code></pre></div>
+<p>These use the retained row order, fixed Bartlett lag 4 or quadratic-spectral bandwidth 5, no prewhitening, and no finite-sample adjustment. Other fixed settings and an explicit row permutation can be supplied as a rule:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hac_rule</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fixed_score_rules.html">fixed_hac_rule</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>, kernel <span class="op">=</span> <span class="st">"QS"</span>, bandwidth <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                           order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span>, adjust <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/rv_cal.html">rv_cal</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="st">"profile"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span>, vcov <span class="op">=</span> <span class="va">hac_rule</span><span class="op">)</span></span></code></pre></div>
+<p>For two-way clustering, supply both label vectors in the fitted sample’s order:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">point</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/robust_rv.html">robust_rv</a></span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
-<span>  vcov <span class="op">=</span> <span class="st">"HC1"</span>,</span>
-<span>  calibration <span class="op">=</span> <span class="st">"point"</span>,</span>
-<span>  omega_target <span class="op">=</span> <span class="fl">1.05</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"protected_first"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>Methods <code>"protected_first"</code>, <code>"diagonal_first"</code>, and <code>"full"</code> share the same estimator-agnostic control flow. HC and CR differ only through the supplied function <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>↦</mo><msub><mi>ω</mi><mi>R</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>s</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u\mapsto\omega_R(x,y,s,u)</annotation></semantics></math>.</p>
-</div>
-<div class="section level2">
-<h2 id="external-validation">External validation<a class="anchor" aria-label="anchor" href="#external-validation"></a>
-</h2>
+<code class="sourceCode R"><span><span class="co"># firm_retained and year_retained must match the rows retained by fit</span></span>
+<span><span class="va">rv_two</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sandwich_rv.html">sandwich_rv</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span>,</span>
+<span>                       vcov <span class="op">=</span> <span class="st">"TWCR1_raw"</span>,</span>
+<span>                       cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">firm_retained</span>, <span class="va">year_retained</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># A formula such as cluster = ~ firm + year is also accepted.</span></span></code></pre></div>
+<p>The raw operator adds the two one-way terms and subtracts their intersection. CR1 applies a separate G/(G-1) multiplier to each term and the common (n-1)/residual-df factor. No PSD repair or HC0 intersection replacement is applied. The default cutoff df is min(G1,G2)-1. <code>TWCR0_raw</code> is also available. Alternatively create a reusable <code>fixed_twoway_cluster_rule(firm, year)</code>.</p>
+<p>Nonpositive observed target variances stop the calculation. Nonpositive candidate variances are inadmissible; an invalid prescribed deletion makes calibration unavailable. Signed quadratic optimization and path roots preserve this distinction. The full frozen rule is stored in <code>value$covariance_rule</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/compare_sensemakr.html">compare_sensemakr</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"treatment"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/validate_sandwich_reference.html">validate_sandwich_reference</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"treatment"</span>, vcov <span class="op">=</span> <span class="st">"HC1"</span><span class="op">)</span></span></code></pre></div>
-<p>The test suite additionally checks immutable numerical fixtures produced by the independent Julia implementation. These fixtures are plain CSV files; Julia is never invoked by the R package.</p>
+<code class="sourceCode R"><span><span class="va">value</span> <span class="op">&lt;-</span> <span class="va">rv_two</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">RV_cal_profile</span></span>
+<span><span class="va">cache</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cache_from_lm.html">cache_from_lm</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/evaluate_confounder_reference.html">evaluate_confounder_reference</a></span><span class="op">(</span><span class="va">cache</span>, <span class="va">value</span><span class="op">$</span><span class="va">best_witness_z</span>,</span>
+<span>                               vcov <span class="op">=</span> <span class="va">value</span><span class="op">$</span><span class="va">covariance_rule</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="reproduce-the-darfur-example">Reproduce the Darfur example<a class="anchor" aria-label="anchor" href="#reproduce-the-darfur-example"></a>
+<h2 id="what-the-calibrations-assume">What the calibrations assume<a class="anchor" aria-label="anchor" href="#what-the-calibrations-assume"></a>
 </h2>
-<p>With the suggested <code>sensemakr</code> and <code>sandwich</code> packages installed, run:</p>
+<p>Let omega be the target’s sandwich SE divided by its conventional SE. Increment calibration deletes each observed control, keeps the same sample, then records the signed restoring change in the target’s ratio. Its cap is <code>omega_full + max(0, max(delta_omega))</code>.</p>
+<p>Profile calibration adjusts restoring log increments to a common finite-sample correction. Its cap at strengths x,y is <code>a0 * exp(k * min(L, beta * (sqrt(x) + sqrt(y))))</code>, where <code>a0</code> is the zero-strength augmented-model origin. <code>L</code> and <code>beta</code> are calibrated from scalar controls in their reduced models. Both classes allow every positive omega below the cap, including values below one. They represent explicit similarity assumptions about possible omitted variables.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"darfur"</span>, package <span class="op">=</span> <span class="st">"RobustSandwichRV"</span><span class="op">)</span></span></code></pre></div>
-<p>The demo fits the published Darfur specification and computes bounded HC1 and village-clustered CR1 results using <code>female</code> as the observed benchmark.</p>
-<p>A small single-threaded timing benchmark is installed with the package:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="st">"benchmarks"</span>, <span class="st">"benchmark_runtime.R"</span>, package <span class="op">=</span> <span class="st">"RobustSandwichRV"</span></span>
-<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rv_benchmarks.html">rv_benchmarks</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">b</span><span class="op">$</span><span class="va">records</span></span>
+<span><span class="va">b</span><span class="op">$</span><span class="va">M_delta</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>L <span class="op">=</span> <span class="va">b</span><span class="op">$</span><span class="va">L</span>, beta <span class="op">=</span> <span class="va">b</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span></span></code></pre></div>
+<p>Negative increments are retained. A complete zero benchmark is a distinct, restrictive scenario. Empty or incomplete pools return <code>CALIBRATION_UNAVAILABLE</code>; invalid refits are never silently discarded.</p>
+<p>A character vector lists <strong>separate</strong> benchmark units. A named list can define whole blocks, for example <code>list(village = "factor(village)")</code>. The increment uses each whole block’s change without dividing by rank. Submit scalar and block pools separately. Profile calibration requires scalar units. By default, <code>benchmarks = NULL</code> selects eligible scalar model terms, excluding the target and intercept; inspect the returned records before interpreting the calibration.</p>
 </div>
 <div class="section level2">
-<h2 id="interpretation">Interpretation<a class="anchor" aria-label="anchor" href="#interpretation"></a>
+<h2 id="verify-and-reproduce-a-result">Verify and reproduce a result<a class="anchor" aria-label="anchor" href="#verify-and-reproduce-a-result"></a>
 </h2>
-<p>“Exact” refers to the realized sample statistic, the selected HC/CR formula, the null value, and the fixed critical-value convention. It does <strong>not</strong> imply exact finite-sample test size, confidence-interval coverage, or absence of sampling uncertainty in a population sensitivity parameter.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rv_cal.html">rv_cal</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span>, <span class="st">"profile"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span>, <span class="st">"disp"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">value</span><span class="op">$</span><span class="va">control</span></span>
+<span><span class="va">value</span><span class="op">$</span><span class="va">benchmark</span><span class="op">$</span><span class="va">records</span></span>
+<span><span class="va">value</span><span class="op">$</span><span class="va">witness_refit</span></span>
+<span></span>
+<span><span class="va">cache</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cache_from_lm.html">cache_from_lm</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"wt"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/evaluate_confounder_reference.html">evaluate_confounder_reference</a></span><span class="op">(</span><span class="va">cache</span>, <span class="va">value</span><span class="op">$</span><span class="va">best_witness_z</span>, vcov <span class="op">=</span> <span class="st">"HC1"</span><span class="op">)</span></span></code></pre></div>
+<p>Every finite new upper bound uses the actual refitted strength of a synthetic index. <code>witness_literal_decision_change</code> distinguishes strict loss from reaching the closed boundary. Numerical point certification uses ordinary floating point. If the observed test already does not reject, its loss RV is zero by convention.</p>
+<p>The current R release supports unweighted, full-rank <code>lm</code> models with an intercept and one scalar target. HC2/HC3, CR2, adaptive HAC tuning, weighted fits, and literal multivariate omitted blocks are outside the new entry points. The unrestricted analytical envelope is documented in <code>inst/LOWER-BOUND.txt</code>; it can be less sharp than specialized research bounds in the article.</p>
+</div>
+<div class="section level2">
+<h2 id="earlier-interfaces">Earlier interfaces<a class="anchor" aria-label="anchor" href="#earlier-interfaces"></a>
+</h2>
+<p><code><a href="reference/robust_rv.html">robust_rv()</a></code>, <code><a href="reference/rv_cal_bounded.html">rv_cal_bounded()</a></code> and <code><a href="reference/conditional_omega_rv.html">conditional_omega_rv()</a></code> retain their earlier point/symmetric-band definitions and HC/one-way CR scope for compatibility. Use <code><a href="reference/sandwich_rv.html">sandwich_rv()</a></code>, <code><a href="reference/rv_sand.html">rv_sand()</a></code> and <code><a href="reference/rv_cal.html">rv_cal()</a></code> for the current manuscript’s estimands.</p>
+</div>
+<div class="section level2">
+<h2 id="development-checks">Development checks<a class="anchor" aria-label="anchor" href="#development-checks"></a>
+</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="ex">Rscript</span> tools/check-local.R .</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="ex">R</span> CMD build .</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="ex">R</span> CMD check <span class="at">--no-manual</span> RobustSandwichRV_0.5.0.tar.gz</span></code></pre></div>
+<p>The tests cover independent sandwich refits, both calibration formulas, score gradients, analytical envelopes, missing and zero pools, preserved random state, and frozen Julia covariance fixtures. Full article replay scripts in <code>tools/</code> add comparisons against stored current-manuscript matrices and indices.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -204,12 +202,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/JanAcedanski/RobustSandwichRV/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/JanAcedanski/RobustSandwichRV/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>

@@ -25,6 +25,7 @@
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/evaluate_confounder.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/evaluate_confounder_reference.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/evaluate_subspace.html</loc></url>
+<url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/fixed_score_rules.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/index.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/naive_robust_t_rv.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/plot.robust_rv_result.html</loc></url>
@@ -33,8 +34,12 @@
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/print.robust_rv_result.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/reduce_score_subspace.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/robust_rv.html</loc></url>
+<url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_benchmarks.html</loc></url>
+<url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal_bounded.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal_bounded_sequence.html</loc></url>
+<url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.html</loc></url>
+<url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/single_parameterization.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/summary.robust_rv_result.html</loc></url>
 <url><loc>https://JanAcedanski.github.io/RobustSandwichRV/reference/tidy_rv.html</loc></url>

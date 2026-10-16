@@ -84,7 +84,7 @@ profile_k2
 #>   Certified upper bound: 0.3323726 
 #>   Reported RV: 0.3323726 
 #>   Witness omega / robust t: 1.266437 / 1.992102 
-#>   Runtime: 0.017 seconds
+#>   Runtime: 0.016 seconds
 ```
 
 Both calibrated classes permit 0 \< omega \<= cap, including omega below
@@ -196,7 +196,7 @@ hac
 #>   Certified upper bound: 0.3476631 
 #>   Reported RV: 0.3476631 
 #>   Witness omega / robust t: 1.163531 / 1.992102 
-#>   Runtime: 0.014 seconds
+#>   Runtime: 0.012 seconds
 fixed_hac_rule(nobs(fit), "QS", bandwidth = 5)
 #> Fixed sandwich covariance rule: HAC_QS_BW5 
 #>   Observations: 80 

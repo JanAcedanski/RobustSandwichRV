@@ -114,7 +114,7 @@ rv_cal(fit, "wt", "profile", c("hp", "disp"), vcov = hac,
 #>   Certified upper bound: 0.3629549 
 #>   Reported RV: 0.3629549 
 #>   Witness omega / robust t: 0.5545122 / -2.051831 
-#>   Runtime: 0.013 seconds
+#>   Runtime: 0.012 seconds
 fixed_twoway_cluster_rule(rep(1:8, each = 4), rep(1:4, 8))
 #> Fixed sandwich covariance rule: TWCR1_raw 
 #>   Observations: 32 

@@ -117,7 +117,7 @@ rv_cal(fit, "wt", "increment", c("hp", "disp"), run_search = FALSE)
 #>   Certified upper bound: 0.2691982 
 #>   Reported RV: 0.2691982 
 #>   Witness omega / robust t: 0.908662 / -2.051831 
-#>   Runtime: 0.013 seconds
+#>   Runtime: 0.014 seconds
 rv_cal(fit, "wt", "profile", c("hp", "disp"), k = 1, run_search = FALSE)
 #> RV_cal_profile 
 #>   Covariance: HC1 

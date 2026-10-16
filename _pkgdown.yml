@@ -5,6 +5,12 @@ template:
 reference:
   - title: Main workflow
     contents:
+      - sandwich_rv
+      - rv_sand
+      - rv_cal
+      - rv_benchmarks
+  - title: Legacy point and symmetric-band workflows
+    contents:
       - robust_rv
       - calibrated_rv
       - rv_cal_bounded
@@ -12,6 +18,8 @@ reference:
       - conditional_omega_rv
   - title: Model preparation and evaluation
     contents:
+      - fixed_hac_rule
+      - fixed_twoway_cluster_rule
       - prepare_model
       - cache_from_lm
       - evaluate_confounder

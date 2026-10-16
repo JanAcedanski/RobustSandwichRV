@@ -77,33 +77,20 @@ alignment_directions <- function(cache, x, y, bias_sign, u) {
 #' calibration algorithms.
 #'
 #' @param cache An `rv_cache`.
-#' @param vcov HC0, HC1, CR0, or CR1.
-#' @param cluster Optional one-way cluster labels.
+#' @param vcov A built-in sandwich estimator or a fixed HAC/two-way rule.
+#' @param cluster One-way labels or two-column labels for two-way clustering.
 #' @return A function computing `se_R / se_classical`.
 #' @export
 conditional_omega_evaluator <- function(cache, vcov = "HC1", cluster = NULL) {
-  vcov <- match.arg(vcov, c("HC0", "HC1", "CR0", "CR1"))
   cluster <- .rv_resolve_cluster(cluster, cache)
+  rule <- .rv_resolve_rule(vcov, cache$n, cluster)
   df_full <- cache$df_short - 1L
-  if (vcov %in% c("HC0", "HC1")) {
-    scale2 <- if (vcov == "HC0") df_full else cache$n
-    return(function(x, y, bias_sign, u) {
-      directions <- alignment_directions(cache, x, y, bias_sign, u)
-      score <- directions$q_hat * directions$r_hat
-      sqrt(scale2 * sum(score^2))
-    })
-  }
-  info <- .rv_cluster_codes(cluster, cache$n)
-  scale2 <- if (vcov == "CR0") {
-    df_full
-  } else {
-    info$G / (info$G - 1) * (cache$n - 1)
-  }
+  scale2 <- df_full * .rv_rule_correction(rule, df_full)
   function(x, y, bias_sign, u) {
     directions <- alignment_directions(cache, x, y, bias_sign, u)
     score <- directions$q_hat * directions$r_hat
-    totals <- rowsum(score, info$codes, reorder = FALSE)
-    sqrt(scale2 * sum(totals^2))
+    value <- scale2 * sum(score * rule$apply(score))
+    if (is.finite(value) && value > 0) sqrt(value) else NA_real_
   }
 }
 

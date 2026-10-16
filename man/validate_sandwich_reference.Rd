@@ -11,9 +11,9 @@ validate_sandwich_reference(model, treatment, vcov = "HC1", cluster = NULL)
 
 \item{treatment}{Treatment coefficient name.}
 
-\item{vcov}{HC0, HC1, CR0, or CR1.}
+\item{vcov}{HC0/HC1, one-way CR0/CR1, HAC_Bartlett_L4, HAC_QS_BW5, TWCR0_raw, TWCR1_raw, or a fixed covariance rule.}
 
-\item{cluster}{Cluster labels or formula for CR estimators.}
+\item{cluster}{One-way labels, a two-column data frame/matrix, or a formula for one or two dimensions.}
 }
 \value{
 A data frame comparing standard errors and t statistics.

@@ -121,17 +121,26 @@ validate_sandwich_reference <- function(model, treatment, vcov = "HC1",
   if (!requireNamespace("sandwich", quietly = TRUE)) {
     stop("package 'sandwich' is required for this validation", call. = FALSE)
   }
-  vcov <- match.arg(vcov, c("HC0", "HC1", "CR0", "CR1"))
   cache <- cache_from_lm(model, treatment)
   labels <- .rv_resolve_cluster(cluster, cache)
-  internal <- .rv_short_evaluation(cache, vcov, labels)
-  if (vcov %in% c("HC0", "HC1")) {
-    external_vcov <- sandwich::vcovHC(model, type = vcov)
+  rule <- .rv_resolve_rule(vcov, cache$n, labels)
+  internal <- .rv_short_evaluation(cache, rule)
+  family <- rule$metadata$family
+  if (family == "HC") {
+    external_vcov <- sandwich::vcovHC(model, type = rule$name)
+  } else if (family == "HAC") {
+    weights <- c(1, rule$metadata$weights)
+    external_vcov <- sandwich::vcovHAC(model, prewhite = FALSE,
+      weights = function(x, ...) weights, adjust = rule$metadata$adjust,
+      order.by = order(rule$metadata$order))
   } else {
+    two_way <- family == "two_way_cluster"
+    labels <- if (two_way) as.data.frame(rule$metadata$codes[1:2]) else rule$metadata$codes
+    cr1 <- if (two_way) rule$metadata$variant == "CR1" else rule$name == "CR1"
     external_vcov <- sandwich::vcovCL(
       model, cluster = labels,
-      type = if (vcov == "CR1") "HC1" else "HC0",
-      cadjust = vcov == "CR1"
+      type = if (cr1) "HC1" else "HC0",
+      cadjust = cr1, multi0 = FALSE, fix = FALSE
     )
   }
   external_se <- sqrt(external_vcov[treatment, treatment])

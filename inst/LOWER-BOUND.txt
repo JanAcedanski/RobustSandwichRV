@@ -1,0 +1,67 @@
+Analytical lower bound used by the new R loss interfaces
+=======================================================
+
+Let d,e be orthogonal unit residuals of the observed target and outcome.
+For x,y <= r, set rd=sqrt(x), ry=s*sqrt(y), k=sqrt(1-y),
+q=sqrt(1-x)*d-rd*ry*e-rd*k*u, v=k*e-ry*u.
+Here u is a unit vector orthogonal to the observed design and outcome.
+The score product is
+
+q*v = sqrt((1-x)*(1-y))*d*e - sqrt(1-x)*ry*d*u
+      - rd*ry*k*e*e + rd*(2*y-1)*e*u + rd*k*ry*u*u.
+
+For a positive semidefinite score operator A with largest eigenvalue lambda,
+the triangle inequality in its seminorm, together with
+||d*u|| <= ||d||_infinity, ||e*u|| <= ||e||_infinity,
+||u*u|| <= 1, gives
+
+omega <= a0 + sqrt(chi*lambda) *
+                 [sqrt(r)*(||d||_infinity+||e||_infinity)
+                   + r*(sqrt(sum(e^4))+1)].
+
+Also ||q*v||^2 <= 1/2 for orthogonal unit q,v, so
+omega <= sqrt(chi*lambda/2). B_sand(r) is the minimum of these bounds.
+For HC, A is identity and lambda=1; for one-way CR, A sums within clusters
+and lambda is the largest cluster size. chi=m*a(m), m=nu-1.
+The origin a0 is evaluated with the augmented model correction.
+
+If P_c(B(r)) > r, no index of strength at most r can remove significance.
+The crossing r=P_c(B(r)) therefore provides an analytical lower bound.
+For increment calibration replace B by min(B_sand,M_delta).
+For profile calibration replace B by
+min(B_sand,a0*exp(k*min(L,2*beta*sqrt(r)))).
+Only actual pair-specific caps are used in witness verification and search.
+
+Seventy scalar bisections and a 1e-12 subtraction protect ordinary numerical
+rounding; this is Float64 computation, not a formal interval-arithmetic proof.
+The envelope may be less sharp than specialized research bounds in the article.
+An optimizer failure never changes this analytical lower bound.
+
+Version 0.5: fixed HAC and indefinite raw two-way clustering
+----------------------------------------------------------
+
+For fixed HAC the same PSD envelope applies. A valid spectral norm bound is
+1+2*sum(abs(kernel_lag_weights)); ordering is a fixed permutation. Unadjusted
+HAC has chi=m, while the optional HC1 adjustment has chi=n. Kernel weights,
+ordering and bandwidth are frozen for all deletion and augmentation refits.
+
+The PSD seminorm triangle inequality does not apply to raw two-way A.
+Write the expanded score as a*s0+delta, where s0=d*e and 0<=a<=1.
+Let D(r)=sqrt(r)*(||d||_infinity+||e||_infinity)
+           + r*(sqrt(sum(e^4))+1).
+For an admissible positive variance,
+
+omega^2 <= a0^2 + chi*(2*||A*s0||*D(r) + ||A||*D(r)^2).
+
+This follows by expanding the signed quadratic form, using s0'*A*s0>0,
+and bounding the cross term by Cauchy-Schwarz. A valid ||A|| bound is the
+sum of all three weighted maximum cluster sizes. A separate positive
+spectral bound is the sum of the first two weighted maximum cluster sizes,
+since the subtracted intersection operator is PSD. The global omega bound
+is sqrt(chi*lambda_positive/2). Take the minimum of the global and continuous
+bounds before applying the same CH crossing procedure.
+
+Direction searches optimize the SIGNED normalized quadratic form. Root
+finding uses that continuous signed form minus a positive target variance,
+so intermediate negative values cause neither logarithms of negative values
+nor PSD repair. The final positive-variance index must pass its full refit.

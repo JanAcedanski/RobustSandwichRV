@@ -23,10 +23,9 @@ evaluate_confounder_reference(
 
 \item{z}{Confounder vector or matrix.}
 
-\item{vcov}{One of \code{"classical"}, \code{"HC0"}, \code{"HC1"}, \code{"CR0"}, or
-\code{"CR1"}.}
+\item{vcov}{Classical, a built-in sandwich estimator, or a fixed covariance rule (see \code{\link{fixed_hac_rule}}).}
 
-\item{cluster}{Optional one-way cluster labels.}
+\item{cluster}{One-way labels or two-column data frame/matrix for two-way clustering.}
 
 \item{null}{Null coefficient value.}
 }

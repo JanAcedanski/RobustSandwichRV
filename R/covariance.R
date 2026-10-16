@@ -13,33 +13,20 @@
     stop("the full treatment coefficient is not identified", call. = FALSE)
   }
   classical <- (rss / df_full) / qq
-  if (vcov == "classical") {
+  if (is.character(vcov) && vcov == "classical") {
     return(list(classical = classical, robust = classical, correction = 1,
                 meat = NA_real_, n_groups = n))
   }
-  if (vcov %in% c("HC0", "HC1")) {
-    meat <- sum((q * e)^2)
-    correction <- if (vcov == "HC1") n / df_full else 1
-    return(list(
-      classical = classical,
-      robust = correction * meat / qq^2,
-      correction = correction,
-      meat = meat,
-      n_groups = n
-    ))
-  }
-  cluster_result <- .rv_cluster_scalar_meat(q, e, cluster)
-  correction <- if (vcov == "CR1") {
-    cluster_result$G / (cluster_result$G - 1) * (n - 1) / df_full
-  } else {
-    1
-  }
+  rule <- .rv_resolve_rule(vcov, n, cluster)
+  score <- q * e
+  meat <- sum(score * rule$apply(score))
+  correction <- .rv_rule_correction(rule, df_full)
   list(
     classical = classical,
-    robust = correction * cluster_result$meat / qq^2,
+    robust = correction * meat / qq^2,
     correction = correction,
-    meat = cluster_result$meat,
-    n_groups = cluster_result$G
+    meat = meat,
+    n_groups = rule$metadata$groups %||% n
   )
 }
 
@@ -47,8 +34,9 @@
                                     original_rank, vcov, cluster, null) {
   df_full <- cache$n - cache$rank_x - 1L - as.integer(original_rank)
   variances <- .rv_scalar_variance(vcov, q, e_full, df_full, cluster)
-  if (variances$classical < 0 || variances$robust < 0) {
-    stop("a negative variance was produced", call. = FALSE)
+  if (!is.finite(variances$classical) || !is.finite(variances$robust) ||
+      variances$classical <= 0 || variances$robust <= 0) {
+    stop("nonpositive or nonfinite target variance; raw covariance is not repaired", call. = FALSE)
   }
   se_classical <- sqrt(variances$classical)
   se_robust <- sqrt(variances$robust)
@@ -82,7 +70,7 @@
       geometric_rank = ncol(U),
       original_rank = as.integer(original_rank),
       df_residual = df_full,
-      vcov = vcov,
+      vcov = if (inherits(vcov, "rv_score_rule")) vcov$name else vcov,
       finite_sample_correction = variances$correction,
       meat = variances$meat,
       n_groups = variances$n_groups
@@ -95,9 +83,8 @@
 #'
 #' @param cache An [prepare_model()] cache.
 #' @param U Matrix whose columns span the omitted-confounder subspace.
-#' @param vcov One of `"classical"`, `"HC0"`, `"HC1"`, `"CR0"`, or
-#'   `"CR1"`.
-#' @param cluster Optional one-way cluster labels.
+#' @param vcov Classical, a built-in sandwich estimator, or a fixed covariance rule.
+#' @param cluster One-way labels or two-column labels for two-way clustering.
 #' @param original_rank Original omitted-block rank used in degrees-of-freedom
 #'   corrections. This may exceed the geometric rank of a reduced
 #'   two-direction representation.
@@ -263,31 +250,25 @@ evaluate_confounder <- function(y, d = NULL, X = NULL, z = NULL,
   df_full <- cache$n - ncol(W)
   variance_classical <- .rv_dot(e, e) / df_full *
     bread[treatment_index, treatment_index]
-  if (vcov == "classical") {
+  if (is.character(vcov) && vcov == "classical") {
     V <- .rv_dot(e, e) / df_full * bread
     correction <- 1
     n_groups <- cache$n
     meat_scalar <- NA_real_
-  } else if (vcov %in% c("HC0", "HC1")) {
-    meat_matrix <- crossprod(W, W * e^2)
-    correction <- if (vcov == "HC1") cache$n / df_full else 1
-    V <- correction * bread %*% meat_matrix %*% bread
-    n_groups <- cache$n
-    q <- as.numeric(.rv_residualize(U, cache$d))
-    meat_scalar <- sum((q * e)^2)
   } else {
-    cluster_meat <- .rv_cluster_matrix_meat(W, e, cluster)
-    correction <- if (vcov == "CR1") {
-      cluster_meat$G / (cluster_meat$G - 1) * (cache$n - 1) / df_full
-    } else {
-      1
-    }
-    V <- correction * bread %*% cluster_meat$meat %*% bread
-    n_groups <- cluster_meat$G
+    rule <- .rv_resolve_rule(vcov, cache$n, cluster)
+    scores <- W * e
+    meat_matrix <- crossprod(scores, rule$apply(scores))
+    correction <- .rv_rule_correction(rule, df_full)
+    V <- correction * bread %*% meat_matrix %*% bread
+    n_groups <- rule$metadata$groups %||% cache$n
     q <- as.numeric(.rv_residualize(U, cache$d))
-    meat_scalar <- .rv_cluster_scalar_meat(q, e, cluster)$meat
+    meat_scalar <- sum((q * e) * rule$apply(q * e))
   }
   variance_robust <- V[treatment_index, treatment_index]
+  if (!is.finite(variance_classical) || !is.finite(variance_robust) ||
+      variance_classical <= 0 || variance_robust <= 0)
+    stop("nonpositive or nonfinite target variance; raw covariance is not repaired", call. = FALSE)
   se_classical <- sqrt(variance_classical)
   se_robust <- sqrt(variance_robust)
   q <- as.numeric(.rv_residualize(U, cache$d))
@@ -310,7 +291,7 @@ evaluate_confounder <- function(y, d = NULL, X = NULL, z = NULL,
     geometric_rank = k,
     original_rank = k,
     df_residual = df_full,
-    vcov = vcov,
+    vcov = if (inherits(vcov, "rv_score_rule")) vcov$name else vcov,
     finite_sample_correction = correction,
     meat = meat_scalar,
     n_groups = n_groups

@@ -1,32 +1,24 @@
 # Publishing on GitHub
 
-The repository is ready to publish after choosing the GitHub account or
-organization that will own it.
+Repository: <https://github.com/JanAcedanski/RobustSandwichRV>
 
-1. Configure repository-specific links:
-
-   ```sh
-   Rscript tools/configure-github.R GITHUB_OWNER
-   ```
-
-2. Run the local checks:
+1. Update `DESCRIPTION`, `NEWS.md`, and the version-pinned installation command
+   in both `README.md` and `README.Rmd`. Keep their main content identical.
+2. Run the quick-start demo and the package checks:
 
    ```sh
+   Rscript tools/check-local.R .
    R CMD build .
-   R CMD check --no-manual RobustSandwichRV_0.1.0.tar.gz
+   R CMD check --no-manual RobustSandwichRV_0.5.0.tar.gz
    ```
 
-3. Create an empty public repository named `RobustSandwichRV`, then push:
+3. Commit the reviewed source and push `main`. Inspect the R-CMD-check and pkgdown
+   workflows. The check matrix covers Windows, macOS, and Linux.
+4. Create tag `v0.5.0` at the tested source commit and publish a GitHub release
+   with release notes, `RobustSandwichRV_0.5.0.tar.gz`, and `SHA256SUMS`.
+5. Verify installation from the tag in a clean R library and run
+   `demo("quick-start", package = "RobustSandwichRV", ask = FALSE)`.
 
-   ```sh
-   git init
-   git add .
-   git commit -m "Initial pure-R RobustSandwichRV release"
-   git branch -M main
-   git remote add origin https://github.com/GITHUB_OWNER/RobustSandwichRV.git
-   git push -u origin main
-   ```
-
-The included workflows run `R CMD check` on Windows, macOS, and Linux and
-deploy the pkgdown site to the `gh-pages` branch. Enable GitHub Pages for that
-branch after the first successful site build.
+The pkgdown workflow deploys the documentation to the `gh-pages` branch.
+The source archive is an R source package, not a platform-specific binary.
+For the next release, replace `0.5.0` in these steps with the new version.

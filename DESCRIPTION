@@ -1,7 +1,7 @@
 Package: RobustSandwichRV
 Type: Package
 Title: Certified Robustness Values with Sandwich Standard Errors
-Version: 0.1.0
+Version: 0.5.0
 Authors@R: c(
     person("Jan", "Acedanski", role = c("aut", "cre"),
            email = "JanAcedanski@users.noreply.github.com"),
@@ -9,8 +9,10 @@ Authors@R: c(
   )
 Description: Computes sample robustness values for omitted-variable
     sensitivity analysis in linear regression when inference uses classical,
-    HC0, HC1, CR0, or CR1 standard errors. Implements point-conditioned and
-    benchmark-bounded calibration, analytical protected lower bounds,
+    HC0, HC1, one-way or raw two-way cluster, and fixed-kernel HAC standard
+    errors. Computes unrestricted sandwich,
+    restoring-increment and strength-dependent profile robustness values,
+    analytical lower bounds,
     constructive confounder witnesses, and independent full-regression
     validation. The package uses Cinelli-Hazlett partial-R-squared geometry
     but explicitly accounts for attainable sandwich standard-error ratios.
@@ -19,7 +21,8 @@ Encoding: UTF-8
 Depends: R (>= 4.2.0)
 Imports:
     graphics,
-    stats
+    stats,
+    utils
 Suggests:
     knitr,
     rmarkdown,

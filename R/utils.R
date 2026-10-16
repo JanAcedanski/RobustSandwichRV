@@ -1,10 +1,12 @@
-.rv_supported_vcov <- c("classical", "HC0", "HC1", "CR0", "CR1")
+.rv_supported_vcov <- c("classical", "HC0", "HC1", "CR0", "CR1",
+                        "HAC_Bartlett_L4", "HAC_QS_BW5", "TWCR0_raw", "TWCR1_raw")
 
 `%||%` <- function(x, y) {
   if (is.null(x)) y else x
 }
 
 .rv_match_vcov <- function(vcov) {
+  if (inherits(vcov, "rv_score_rule")) return(vcov)
   vcov <- match.arg(vcov, .rv_supported_vcov)
   vcov
 }
@@ -193,16 +195,14 @@
     stop("alpha must lie in (0, 1)", call. = FALSE)
   }
   vcov <- .rv_match_vcov(vcov)
-  if (vcov %in% c("CR0", "CR1")) {
-    G <- .rv_cluster_codes(cluster, cache$n)$G
-    return(stats::qt(1 - alpha / 2, df = G - 1L))
-  }
   df_full <- cache$df_short - as.integer(block_rank)
   if (df_full <= 0L) {
     stop("the candidate model has no residual degrees of freedom",
          call. = FALSE)
   }
-  stats::qt(1 - alpha / 2, df = df_full)
+  df <- if (is.character(vcov) && vcov == "classical") df_full else
+    .rv_rule_df(.rv_resolve_rule(vcov, cache$n, cluster), df_full)
+  stats::qt(1 - alpha / 2, df = df)
 }
 
 .rv_timer <- function() {

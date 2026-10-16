@@ -132,12 +132,12 @@ cache_from_lm <- function(model, treatment) {
     }
     frame <- stats::model.frame(cluster, data = cache$model_frame,
                                 na.action = stats::na.pass)
-    if (ncol(frame) != 1L) {
-      stop("cluster formula must select exactly one variable", call. = FALSE)
+    if (!(ncol(frame) %in% c(1L, 2L))) {
+      stop("cluster formula must select one or two variables", call. = FALSE)
     }
-    cluster <- frame[[1L]]
+    cluster <- if (ncol(frame) == 1L) frame[[1L]] else frame
   }
-  if (length(cluster) != cache$n) {
+  if ((if (is.matrix(cluster) || is.data.frame(cluster)) nrow(cluster) else length(cluster)) != cache$n) {
     stop("cluster must align with the observations retained by lm",
          call. = FALSE)
   }

@@ -10,30 +10,31 @@ darfur_model <- stats::lm(
   data = darfur
 )
 
-# The recommended observed-control workflow: female supplies the
-# rank-normalized bounded calibration magnitude.
-darfur_hc1 <- robust_rv(
+# Both current observed-control calibrations and unrestricted RV_sand.
+darfur_hc1 <- sandwich_rv(
   darfur_model,
   treatment = "directlyharmed",
   vcov = "HC1",
-  benchmark = "female",
+  benchmarks = c("age", "farmer_dar", "herder_dar", "pastvoted", "hhsize_darfur", "female"),
   seed = 20260809,
   n_starts = 8,
-  max_iterations = 30
+  max_iterations = 30,
+  search_steps = 6
 )
 print(darfur_hc1)
 
 # The control flow is unchanged for one-way clustering. Only the score-based
 # omega evaluator and the CR1 finite-sample factor differ.
-darfur_cr1 <- robust_rv(
+darfur_cr1 <- sandwich_rv(
   darfur_model,
   treatment = "directlyharmed",
   vcov = "CR1",
   cluster = ~ village,
-  benchmark = "female",
+  benchmarks = c("age", "farmer_dar", "herder_dar", "pastvoted", "hhsize_darfur", "female"),
   seed = 20260809,
   n_starts = 8,
-  max_iterations = 30
+  max_iterations = 30,
+  search_steps = 6
 )
 print(darfur_cr1)
 

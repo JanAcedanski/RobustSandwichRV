@@ -52,12 +52,8 @@ benchmark_calibration <- function(delta_L = NULL,
   d_hat <- cache$d / .rv_norm(cache$d)
   e_hat <- cache$e_short / .rv_norm(cache$e_short)
   score <- d_hat * e_hat
-  if (vcov %in% c("HC0", "HC1")) {
-    return(sum(score^2))
-  }
-  info <- .rv_cluster_codes(cluster, cache$n)
-  totals <- rowsum(score, info$codes, reorder = FALSE)
-  sum(totals^2)
+  rule <- .rv_resolve_rule(vcov, cache$n, cluster)
+  sum(score * rule$apply(score))
 }
 
 .rv_omega_origin <- function(cache, vcov, cluster = NULL) {
@@ -65,16 +61,9 @@ benchmark_calibration <- function(delta_L = NULL,
   if (!(L > 0)) {
     stop("the zero-strength sandwich origin is degenerate", call. = FALSE)
   }
-  scale2 <- switch(vcov,
-    HC0 = cache$df_short - 1L,
-    HC1 = cache$n,
-    CR0 = cache$df_short - 1L,
-    CR1 = {
-      G <- .rv_cluster_codes(cluster, cache$n)$G
-      G / (G - 1) * (cache$n - 1)
-    },
-    stop("unsupported covariance estimator", call. = FALSE)
-  )
+  rule <- .rv_resolve_rule(vcov, cache$n, cluster)
+  df <- cache$df_short - 1L
+  scale2 <- df * .rv_rule_correction(rule, df)
   sqrt(scale2 * L)
 }
 

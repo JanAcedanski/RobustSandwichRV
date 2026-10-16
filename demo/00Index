@@ -1,1 +1,2 @@
-darfur	Darfur benchmark-bounded HC1 and CR1 robustness values
+darfur	Darfur unrestricted, increment and profile HC1 and CR1 robustness values
+quick-start	Quick start: three sandwich robustness values from an lm model

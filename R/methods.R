@@ -15,7 +15,9 @@ print.rv_benchmark <- function(x, ...) {
 #' @param ... Unused.
 #' @export
 print.robust_rv_result <- function(x, ...) {
-  title <- if (identical(x$calibration_mode, "bounded")) {
+  title <- if (!is.null(x$measure)) {
+    x$measure
+  } else if (identical(x$calibration_mode, "bounded")) {
     "Benchmark-bounded robust RV"
   } else {
     "Point-conditioned robust RV"
@@ -24,6 +26,8 @@ print.robust_rv_result <- function(x, ...) {
   cat("  Covariance:", x$vcov, "\n")
   cat("  Baseline decision:", x$baseline_decision, "\n")
   cat("  Status:", x$status, "/", x$substatus, "\n")
+  if (!is.null(x$benchmark_status) && !is.na(x$benchmark_status))
+    cat("  Benchmark:", x$benchmark_status, "\n")
   if (!is.null(x$certificate_type)) {
     cat("  Certificate:", x$certificate_type, "\n")
   }
@@ -50,6 +54,8 @@ print.robust_rv_result <- function(x, ...) {
 #' @export
 summary.robust_rv_result <- function(object, ...) {
   table <- data.frame(
+    measure = object$measure %||% object$calibration_mode,
+    estimate = object$rv,
     calibration_mode = object$calibration_mode,
     vcov = object$vcov,
     status = object$status,
@@ -62,6 +68,7 @@ summary.robust_rv_result <- function(object, ...) {
     theorem_exact = object$theorem_exact %||% NA,
     numerically_closed = object$numerically_closed %||% NA,
     certificate_type = object$certificate_type %||% NA_character_,
+    benchmark = object$benchmark_status %||% NA_character_,
     omega_lower = object$omega_lower %||% object$omega_target,
     omega_upper = object$omega_upper %||% object$omega_target,
     witness_omega = object$best_witness_omega %||% NA_real_,
@@ -127,9 +134,14 @@ plot.robust_rv_result <- function(x, cache = NULL, maximum = NULL,
   for (i in seq_along(values)) {
     for (j in seq_along(values)) {
       changed[i, j] <- any(vapply(c(-1, 1), function(sign) {
-        t <- .rv_classical_ch_t_signed(cache, values[[i]], values[[j]], sign)
-        if (reject_short) abs(t / target) <= x$critical_value else
-          abs(t / target) >= x$critical_value
+        t <- .rv_classical_ch_t_signed(cache, values[[i]], values[[j]], sign,
+                                       x$null %||% 0)
+        cap <- if (identical(x$calibration_mode, "profile")) {
+          p <- x$profile
+          p$a0 * exp(p$k * min(p$L, p$beta * (sqrt(values[[i]]) + sqrt(values[[j]]))))
+        } else target
+        if (reject_short) abs(t / cap) <= x$critical_value else
+          abs(t / cap) >= x$critical_value
       }, logical(1)))
     }
   }
@@ -137,7 +149,8 @@ plot.robust_rv_result <- function(x, cache = NULL, maximum = NULL,
                   col = c("#dbeafe", "#fecaca"),
                   xlab = expression(R[D]^2), ylab = expression(R[Y]^2), ...)
   graphics::abline(0, 1, lty = 2, col = "grey35")
-  graphics::points(x$x_prot, x$y_prot, pch = 21, bg = "gold", cex = 1.2)
+  if (!is.null(x$x_prot) && !is.null(x$y_prot))
+    graphics::points(x$x_prot, x$y_prot, pch = 21, bg = "gold", cex = 1.2)
   witness_x <- x$best_witness_x %||% x$x_star
   witness_y <- x$best_witness_y %||% x$y_star
   if (!is.null(witness_x) && is.finite(witness_x) &&

@@ -18,10 +18,9 @@ evaluate_subspace(
 
 \item{U}{Matrix whose columns span the omitted-confounder subspace.}
 
-\item{vcov}{One of \code{"classical"}, \code{"HC0"}, \code{"HC1"}, \code{"CR0"}, or
-\code{"CR1"}.}
+\item{vcov}{Classical, a built-in sandwich estimator, or a fixed covariance rule (see \code{\link{fixed_hac_rule}}).}
 
-\item{cluster}{Optional one-way cluster labels.}
+\item{cluster}{One-way labels or two-column data frame/matrix for two-way clustering.}
 
 \item{original_rank}{Original omitted-block rank used in degrees-of-freedom
 corrections. This may exceed the geometric rank of a reduced

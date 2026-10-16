@@ -1,0 +1,37 @@
+\name{rv_sand}
+\alias{rv_sand}
+\title{Unrestricted sandwich robustness value for loss of significance}
+\usage{
+rv_sand(model, treatment = NULL, vcov = "HC1", cluster = NULL,
+  alpha = 0.05, critical = NULL, null = 0, n_starts = 8L,
+  max_iterations = 80L, seed = 1234L, tolerance = 5e-8,
+  max_radius = 1 - 1e-6, search_steps = 12L, run_search = TRUE,
+  supplied_witnesses = list())
+}
+\arguments{
+\item{model}{An unweighted full-rank \code{lm} model with an intercept, or an \code{rv_cache}.}
+\item{treatment}{Name of one target model-matrix column; required for \code{lm}.}
+\item{vcov}{HC0/HC1, one-way CR0/CR1, HAC_Bartlett_L4, HAC_QS_BW5, TWCR0_raw, TWCR1_raw, or a fixed covariance rule.}
+\item{cluster}{One- or two-way cluster labels aligned with rows retained by the fit, or a formula evaluated in its model frame.}
+\item{alpha}{Two-sided significance level.}
+\item{critical}{Optional fixed positive cutoff. Defaults to a t cutoff with augmented residual degrees of freedom for HC/HAC, number of clusters minus one for one-way CR, and min(G1,G2)-1 for two-way CR.}
+\item{null}{Null value of the target coefficient.}
+\item{n_starts}{Number of screened residual directions.}
+\item{max_iterations}{Maximum local optimizer iterations.}
+\item{seed}{Local random seed, leaving the caller's RNG state unchanged.}
+\item{tolerance}{Positive numerical refit and interval-closing tolerance, at most 0.001.}
+\item{max_radius}{Largest strength queried by the radial search; strictly between zero and one. A previously verified witness above this value may still be retained.}
+\item{search_steps}{Number of radial queries.}
+\item{run_search}{Run fallback search after direct checks.}
+\item{supplied_witnesses}{Vectors or result objects; each candidate is independently rechecked.}
+}
+\description{Computes lower and upper bounds on the weakest added scalar index that removes significance under the specified sandwich rule. Strength is the maximum of treatment-side and outcome-side partial R-squared.}
+\details{An analytical continuous score envelope supplies the lower bound. Failed local searches never increase this bound. Every finite upper bound is the measured strength of an actual index verified by a full augmented QR regression. A point value is returned only when the verified bounds agree within tolerance. The bounds are computational intervals, not confidence intervals or formal interval arithmetic.
+
+The observed test and cutoff are held fixed. If the observed test already does not reject (absolute t no greater than the cutoff), the loss RV is zero by convention. Boundary attainment and strict loss are recorded separately. The current implementation supports unweighted OLS with HC0/HC1, one-way CR0/CR1, raw two-way CR0/CR1, and fixed Bartlett or quadratic-spectral HAC. Weights and order stay fixed; adaptive tuning and PSD repair are not performed. Nonpositive candidate variances are inadmissible. See \code{\link{fixed_hac_rule}} for rule constructors and article aliases.}
+\value{A \code{robust_rv_result}: \code{RV_lower}, \code{RV_upper}, \code{rv} (missing unless resolved), status, tolerances, runtime, and the independently refitted \code{best_witness_z}. A missing upper bound means that no admissible loss index was found; it does not establish infeasibility.}
+\seealso{\code{\link{rv_cal}}, \code{\link{sandwich_rv}}}
+\examples{
+fit <- lm(mpg ~ wt + hp + disp, data = mtcars)
+rv_sand(fit, "wt", run_search = FALSE)
+}

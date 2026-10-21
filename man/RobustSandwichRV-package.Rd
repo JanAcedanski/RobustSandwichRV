@@ -16,8 +16,10 @@ under their original names.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/JanAcedanski/RobustSandwichRV}
-  \item Report bugs at \url{https://github.com/JanAcedanski/RobustSandwichRV/issues}
+  \item \url{https://github.com/JanAcedanski/RVwithSandwichSE}
+  \item \url{https://JanAcedanski.github.io/RVwithSandwichSE/}
+  \item \url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7639842}
+  \item Report bugs at \url{https://github.com/JanAcedanski/RVwithSandwichSE/issues}
 }
 
 }

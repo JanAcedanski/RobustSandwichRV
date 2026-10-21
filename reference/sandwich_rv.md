@@ -59,7 +59,7 @@ as.data.frame(x, row.names = NULL,
 - ...:
 
   Numerical solver arguments from
-  [`rv_sand`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.md);
+  [`rv_sand`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_sand.md);
   unused in methods.
 
 - x,object:

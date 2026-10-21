@@ -94,8 +94,8 @@ also stored as `result$covariance_rule` for independent refits.
 
 ## See also
 
-[`sandwich_rv`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md),
-[`validate_sandwich_reference`](https://JanAcedanski.github.io/RobustSandwichRV/reference/validate_sandwich_reference.md)
+[`sandwich_rv`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/sandwich_rv.md),
+[`validate_sandwich_reference`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/validate_sandwich_reference.md)
 
 ## Examples
 
@@ -114,7 +114,7 @@ rv_cal(fit, "wt", "profile", c("hp", "disp"), vcov = hac,
 #>   Certified upper bound: 0.3629549 
 #>   Reported RV: 0.3629549 
 #>   Witness omega / robust t: 0.5545122 / -2.051831 
-#>   Runtime: 0.012 seconds
+#>   Runtime: 0.007 seconds
 fixed_twoway_cluster_rule(rep(1:8, each = 4), rep(1:4, 8))
 #> Fixed sandwich covariance rule: TWCR1_raw 
 #>   Observations: 32 

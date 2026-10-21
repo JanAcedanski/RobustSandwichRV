@@ -39,7 +39,7 @@ evaluate_confounder(
 
   Classical, a built-in sandwich estimator, or a fixed covariance rule
   (see
-  [`fixed_hac_rule`](https://JanAcedanski.github.io/RobustSandwichRV/reference/fixed_score_rules.md)).
+  [`fixed_hac_rule`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/fixed_score_rules.md)).
 
 - cluster:
 

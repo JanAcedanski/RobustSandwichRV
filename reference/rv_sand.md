@@ -101,7 +101,7 @@ with HC0/HC1, one-way CR0/CR1, raw two-way CR0/CR1, and fixed Bartlett
 or quadratic-spectral HAC. Weights and order stay fixed; adaptive tuning
 and PSD repair are not performed. Nonpositive candidate variances are
 inadmissible. See
-[`fixed_hac_rule`](https://JanAcedanski.github.io/RobustSandwichRV/reference/fixed_score_rules.md)
+[`fixed_hac_rule`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/fixed_score_rules.md)
 for rule constructors and article aliases.
 
 ## Value
@@ -113,8 +113,8 @@ index was found; it does not establish infeasibility.
 
 ## See also
 
-[`rv_cal`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal.md),
-[`sandwich_rv`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md)
+[`rv_cal`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_cal.md),
+[`sandwich_rv`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/sandwich_rv.md)
 
 ## Examples
 

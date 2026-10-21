@@ -43,6 +43,6 @@ calibrated_rv(
 - ...:
 
   Arguments passed to
-  [`rv_cal_bounded()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal_bounded.md)
+  [`rv_cal_bounded()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_cal_bounded.md)
   or
-  [`conditional_omega_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/conditional_omega_rv.md).
+  [`conditional_omega_rv()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/conditional_omega_rv.md).

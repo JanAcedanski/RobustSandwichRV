@@ -65,7 +65,7 @@ binding control names.
 
 ## See also
 
-[`rv_cal`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal.md)
+[`rv_cal`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_cal.md)
 
 ## Examples
 

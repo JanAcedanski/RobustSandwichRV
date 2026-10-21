@@ -1,10 +1,15 @@
-# RobustSandwichRV
+# RVwithSandwichSE
+
+R package: `RobustSandwichRV`.
 
 Pure R sensitivity analysis for linear regressions using HC0/HC1, one-
 or two-way CR0/CR1, and fixed-kernel HAC standard errors. Version 0.5.0
 computes the current manuscript’s **RV_sand**, **RV_cal^Delta**, and
 **RV_cal^prof(k)** on the Cinelli-Hazlett partial R-squared scale. Julia
 is not required.
+
+Article: [read the paper on
+SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7639842).
 
 ## Install version 0.5.0 from GitHub
 
@@ -13,11 +18,11 @@ Run these commands in R (R 4.2 or newer):
 ``` r
 
 install.packages("remotes")  # only needed once
-remotes::install_github("JanAcedanski/RobustSandwichRV@v0.5.0")
+remotes::install_github("JanAcedanski/RVwithSandwichSE@v0.5.0")
 ```
 
 The [0.5.0
-release](https://github.com/JanAcedanski/RobustSandwichRV/releases/tag/v0.5.0)
+release](https://github.com/JanAcedanski/RVwithSandwichSE/releases/tag/v0.5.0)
 also includes the source archive `RobustSandwichRV_0.5.0.tar.gz`.
 
 ## Quick start: one table from your regression
@@ -213,16 +218,16 @@ bounds in the article.
 
 ## Earlier interfaces
 
-[`robust_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/robust_rv.md),
-[`rv_cal_bounded()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal_bounded.md)
+[`robust_rv()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/robust_rv.md),
+[`rv_cal_bounded()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_cal_bounded.md)
 and
-[`conditional_omega_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/conditional_omega_rv.md)
+[`conditional_omega_rv()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/conditional_omega_rv.md)
 retain their earlier point/symmetric-band definitions and HC/one-way CR
 scope for compatibility. Use
-[`sandwich_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md),
-[`rv_sand()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.md)
+[`sandwich_rv()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/sandwich_rv.md),
+[`rv_sand()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_sand.md)
 and
-[`rv_cal()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal.md)
+[`rv_cal()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_cal.md)
 for the current manuscript’s estimands.
 
 ## Development checks

@@ -30,7 +30,7 @@ rv_cal(model, treatment = NULL,
 - benchmarks:
 
   Separate control units as in
-  [`rv_benchmarks`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_benchmarks.md).
+  [`rv_benchmarks`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_benchmarks.md).
 
 - vcov:
 
@@ -57,7 +57,7 @@ rv_cal(model, treatment = NULL,
 - critical:
 
   Optional fixed test cutoff; see
-  [`rv_sand`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.md)
+  [`rv_sand`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_sand.md)
   for defaults.
 
 - null:
@@ -67,7 +67,7 @@ rv_cal(model, treatment = NULL,
 - ...:
 
   Named numerical arguments from
-  [`rv_sand`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.md),
+  [`rv_sand`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_sand.md),
   including previously found witnesses.
 
 ## Details
@@ -94,13 +94,13 @@ A `robust_rv_result`, including the complete benchmark records and
 profile parameters when applicable. `CALIBRATION_UNAVAILABLE` has
 missing bounds. For an already nonrejecting observed test and an
 available calibration, loss RV is zero by convention. See
-[`rv_sand`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.md)
+[`rv_sand`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_sand.md)
 for numerical and inferential interpretation.
 
 ## See also
 
-[`sandwich_rv`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md),
-[`rv_benchmarks`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_benchmarks.md)
+[`sandwich_rv`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/sandwich_rv.md),
+[`rv_benchmarks`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_benchmarks.md)
 
 ## Examples
 
@@ -117,7 +117,7 @@ rv_cal(fit, "wt", "increment", c("hp", "disp"), run_search = FALSE)
 #>   Certified upper bound: 0.2691982 
 #>   Reported RV: 0.2691982 
 #>   Witness omega / robust t: 0.908662 / -2.051831 
-#>   Runtime: 0.014 seconds
+#>   Runtime: 0.01 seconds
 rv_cal(fit, "wt", "profile", c("hp", "disp"), k = 1, run_search = FALSE)
 #> RV_cal_profile 
 #>   Covariance: HC1 
@@ -129,5 +129,5 @@ rv_cal(fit, "wt", "profile", c("hp", "disp"), k = 1, run_search = FALSE)
 #>   Certified upper bound: 0.2691982 
 #>   Reported RV: 0.2691982 
 #>   Witness omega / robust t: 0.908662 / -2.051831 
-#>   Runtime: 0.009 seconds
+#>   Runtime: 0.006 seconds
 ```

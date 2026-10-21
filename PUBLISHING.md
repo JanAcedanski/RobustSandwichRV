@@ -1,6 +1,6 @@
 # Publishing on GitHub
 
-Repository: <https://github.com/JanAcedanski/RobustSandwichRV>
+Repository: <https://github.com/JanAcedanski/RVwithSandwichSE>
 
 1.  Update `DESCRIPTION`, `NEWS.md`, and the version-pinned installation
     command in both `README.md` and `README.Rmd`. Keep their main

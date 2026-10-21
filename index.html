@@ -39,7 +39,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/JanAcedanski/RobustSandwichRV/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/JanAcedanski/RVwithSandwichSE/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -48,24 +48,26 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="robustsandwichrv">RobustSandwichRV<a class="anchor" aria-label="anchor" href="#robustsandwichrv"></a>
+<div class="page-header"><h1 id="rvwithsandwichse">RVwithSandwichSE<a class="anchor" aria-label="anchor" href="#rvwithsandwichse"></a>
 </h1></div>
+<p>R package: <code>RobustSandwichRV</code>.</p>
 <p>Pure R sensitivity analysis for linear regressions using HC0/HC1, one- or two-way CR0/CR1, and fixed-kernel HAC standard errors. Version 0.5.0 computes the current manuscript’s <strong>RV_sand</strong>, <strong>RV_cal^Delta</strong>, and <strong>RV_cal^prof(k)</strong> on the Cinelli-Hazlett partial R-squared scale. Julia is not required.</p>
+<p>Article: <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7639842" class="external-link">read the paper on SSRN</a>.</p>
 <div class="section level2">
 <h2 id="install-version-050-from-github">Install version 0.5.0 from GitHub<a class="anchor" aria-label="anchor" href="#install-version-050-from-github"></a>
 </h2>
 <p>Run these commands in R (R 4.2 or newer):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>  <span class="co"># only needed once</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"JanAcedanski/RobustSandwichRV@v0.5.0"</span><span class="op">)</span></span></code></pre></div>
-<p>The <a href="https://github.com/JanAcedanski/RobustSandwichRV/releases/tag/v0.5.0" class="external-link">0.5.0 release</a> also includes the source archive <code>RobustSandwichRV_0.5.0.tar.gz</code>.</p>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"JanAcedanski/RVwithSandwichSE@v0.5.0"</span><span class="op">)</span></span></code></pre></div>
+<p>The <a href="https://github.com/JanAcedanski/RVwithSandwichSE/releases/tag/v0.5.0" class="external-link">0.5.0 release</a> also includes the source archive <code>RobustSandwichRV_0.5.0.tar.gz</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="quick-start-one-table-from-your-regression">Quick start: one table from your regression<a class="anchor" aria-label="anchor" href="#quick-start-one-table-from-your-regression"></a>
 </h2>
 <p>This complete example uses the built-in <code>mtcars</code> data. Here <code>wt</code> is the coefficient being assessed, and <code>hp</code> and <code>disp</code> are observed controls used to calibrate the two <code>RV_cal</code> measures.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JanAcedanski/RobustSandwichRV" class="external-link">RobustSandwichRV</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JanAcedanski/RVwithSandwichSE" class="external-link">RobustSandwichRV</a></span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">hp</span> <span class="op">+</span> <span class="va">disp</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">rv</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sandwich_rv.html">sandwich_rv</a></span><span class="op">(</span></span>
@@ -167,8 +169,8 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/JanAcedanski/RobustSandwichRV/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/JanAcedanski/RobustSandwichRV/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/JanAcedanski/RVwithSandwichSE/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/JanAcedanski/RVwithSandwichSE/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 

@@ -36,7 +36,7 @@ rv_cal_bounded(
 - benchmark:
 
   A nonnegative `b` or an
-  [`benchmark_calibration()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/benchmark_calibration.md)
+  [`benchmark_calibration()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/benchmark_calibration.md)
   object.
 
 - vcov:

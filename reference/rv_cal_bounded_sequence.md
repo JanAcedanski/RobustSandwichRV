@@ -21,4 +21,4 @@ rv_cal_bounded_sequence(cache, benchmarks, ...)
 - ...:
 
   Arguments passed to
-  [`rv_cal_bounded()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal_bounded.md).
+  [`rv_cal_bounded()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_cal_bounded.md).

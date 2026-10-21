@@ -9,16 +9,16 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/JanAcedanski/RobustSandwichRV/blob/v0.5.0/inst/CITATION)
+[`inst/CITATION`](https://github.com/JanAcedanski/RVwithSandwichSE/blob/main/inst/CITATION)
 
 Acedanski J (2026). *RobustSandwichRV: Certified Robustness Values with
 Sandwich Standard Errors*. R package version 0.1.0,
-<https://github.com/JanAcedanski/RobustSandwichRV>.
+<https://github.com/JanAcedanski/RVwithSandwichSE>.
 
     @Manual{,
       title = {RobustSandwichRV: Certified Robustness Values with Sandwich Standard Errors},
       author = {Jan Acedanski},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://github.com/JanAcedanski/RobustSandwichRV},
+      url = {https://github.com/JanAcedanski/RVwithSandwichSE},
     }

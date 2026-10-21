@@ -13,7 +13,7 @@
   actual residual df.
 - Extended all three current RV estimands, benchmark deletion refits,
   independent covariance evaluation and
-  [`validate_sandwich_reference()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/validate_sandwich_reference.md)
+  [`validate_sandwich_reference()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/validate_sandwich_reference.md)
   to these rules.
 - Added a continuous signed-form lower envelope for indefinite operators
   and signed-quadratic direction optimization/root finding. Nonpositive
@@ -24,23 +24,23 @@
 ## RobustSandwichRV 0.2.0
 
 - Added
-  [`rv_sand()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_sand.md)
+  [`rv_sand()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_sand.md)
   for unrestricted scalar-index loss robustness, with an analytical
   continuous-envelope lower bound and independently refitted uppers.
 - Added
-  [`rv_cal()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_cal.md)
+  [`rv_cal()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_cal.md)
   with restoring-increment and strength-dependent profile calibration
   from the current manuscript, allowing every positive ratio below the
   cap. Direct fixed caps are also supported.
 - Added
-  [`rv_benchmarks()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/rv_benchmarks.md)
+  [`rv_benchmarks()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/rv_benchmarks.md)
   retaining all signed deletion increments, common-chi corrections,
   partial R-squared values and binding controls. Empty, incomplete and
   complete-zero pools are distinguished. Blocks are not rank-normalized
   in the new increment calibration; the profile requires scalar
   benchmarks.
 - Added
-  [`sandwich_rv()`](https://JanAcedanski.github.io/RobustSandwichRV/reference/sandwich_rv.md)
+  [`sandwich_rv()`](https://JanAcedanski.github.io/RVwithSandwichSE/reference/sandwich_rv.md)
   and a four-row practitioner table on a common test cutoff.
 - Retained the legacy point and symmetric-band APIs for compatibility.
 
